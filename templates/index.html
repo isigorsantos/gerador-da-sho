@@ -76,20 +76,23 @@
         }
         @keyframes brilho { 0% { left: -100%; } 100% { left: 100%; } }
 
-        /* --- RETÂNGULO VERDINHO DO SUCESSO --- */
         .resultado { 
             margin-top: 25px; padding: 25px; border-radius: 35px; 
-            background: rgba(48, 209, 88, 0.05); /* Fundo verde sutil */
-            border: 1px solid rgba(48, 209, 88, 0.2); /* Borda verdinha */
+            background: rgba(48, 209, 88, 0.05); 
+            border: 1px solid rgba(48, 209, 88, 0.2);
             animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
+        /* --- ANIMAÇÃO PULSANTE VAI E VEM --- */
         .sucesso-titulo { 
             color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px;
-            animation: pulso 0.8s ease-out; /* Animação de pulso */
+            animation: pulso-vai-vem 1.5s infinite ease-in-out;
         }
-        @keyframes pulso { 0% { transform: scale(0.9); opacity: 0; } 50% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+        @keyframes pulso-vai-vem {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
 
         .link-text { color: var(--marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
         
@@ -141,7 +144,7 @@
         {% endif %}
 
         <div class="canais-section">
-            <span class="canais-texto">Participe de nossos grupos de cupons grátis:</span>
+            <span class="canais-texto">Nossos grupos de cupons grátis 💛</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram-plane"></i> Grupo no Telegram</a>
                 <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
