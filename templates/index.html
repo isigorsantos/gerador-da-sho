@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador da Sho</title>
+
+    <meta name="description" content="Transforme links da Shopee em ofertas exclusivas com desconto! 🧡">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gerador-da-sho.vercel.app">
+    <meta property="og:title" content="Gerador da Sho ⚡">
+    <meta property="og:description" content="Gere seus links com desconto agora mesmo no estilo Cupons da Sho! 🧡">
+    <meta property="og:image" content="https://gerador-da-sho.vercel.app/static/logo.png">
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
@@ -21,14 +29,13 @@
         }
 
         .light-mode {
-            --bg-body: #e3e5e8; /* Fundo um pouco mais cinza para o branco brilhar */
+            --bg-body: #e3e5e8;
             --texto-principal: #1d1d1f;
             --texto-secundario: rgba(29, 29, 31, 0.6);
             --glass-shadow: inset 0 1px 2px rgba(255, 255, 255, 1), 0 15px 35px rgba(0,0,0,0.06);
             --glass-border: 1px solid rgba(255, 255, 255, 0.8);
             --bg-glass-base: rgba(255, 255, 255, 0.45);
-            /* Input no modo claro com mais "profundidade" */
-            --bg-input-glass: rgba(0, 0, 0, 0.06); 
+            --bg-input-glass: rgba(0, 0, 0, 0.06);
         }
 
         body { 
@@ -63,12 +70,9 @@
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 15px; border-radius: 20px; 
             background: var(--bg-input-glass); color: var(--texto-principal); 
-            /* Sombra interna para dar efeito de "escavado" no vidro */
-            border: 1px solid rgba(0, 0, 0, 0.05);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid rgba(0, 0, 0, 0.05); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
             font-family: 'Inter', sans-serif; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s;
         }
-        .light-mode input { border: 1px solid rgba(0, 0, 0, 0.08); box-shadow: inset 0 2px 5px rgba(0,0,0,0.05); }
         input:focus { border-color: var(--cor-marca); background: rgba(238, 77, 45, 0.04); }
         
         .btn-gerar { 
@@ -79,25 +83,18 @@
         }
         .btn-gerar:active { transform: scale(0.97); }
 
-        /* ÁREA DE RESULTADO MELHORADA */
         .resultado { 
             margin-top: 25px; padding: 25px; border-radius: 30px; 
-            background: rgba(48, 209, 88, 0.05); /* Leve tom verde no fundo */
-            border: 1px solid rgba(48, 209, 88, 0.2);
+            background: rgba(48, 209, 88, 0.05); border: 1px solid rgba(48, 209, 88, 0.2);
             animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
         }
         .light-mode .resultado { background: rgba(48, 209, 88, 0.1); border: 1px solid rgba(48, 209, 88, 0.3); }
 
-        .sucesso-titulo { 
-            color: #30d158; font-weight: 800; font-size: 16px; display: block; margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(48, 209,  green, 0.2); /* Efeito neon suave */
-        }
-        
-        /* Link em destaque */
+        .sucesso-titulo { color: #30d158; font-weight: 800; font-size: 16px; display: block; margin-bottom: 15px; }
         .link-text { 
             color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; 
             display: block; margin-bottom: 20px; padding: 10px; border-radius: 12px;
-            background: rgba(0,0,0,0.1); /* "Cama" para o link brilhar */
+            background: rgba(0,0,0,0.1); 
         }
         .light-mode .link-text { background: rgba(255,255,255,0.5); }
         
@@ -156,7 +153,7 @@
         {% endif %}
 
         <div class="canais-section">
-            <span style="color: var(--texto-secundario); font-size: 12px; margin-bottom: 18px; display: block; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Grupos de cupons grátis:</span>
+            <span style="color: var(--texto-secundario); font-size: 12px; margin-bottom: 18px; display: block; font-weight: 600; text-transform: uppercase;">Grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
                     <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="TG">
