@@ -6,14 +6,16 @@
     <title>Gerador da Sho - Cupons da Sho</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; margin: 0; }
+        body { background-color: #121212; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; margin: 0; }
         .container { max-width: 450px; margin: auto; background: #1e1e1e; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .logo { width: 110px; border-radius: 20px; margin-bottom: 20px; }
+        h2 { font-size: 24px; margin-bottom: 5px; }
+        .slogan { color: #888; font-size: 13px; margin-bottom: 25px; display: block; }
         
-        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; margin: 10px 0; background: #2c2c2c; color: white; box-sizing: border-box; }
-        .btn-gerar { background: #ff4d2d; color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; margin: 10px 0; background: #2c2c2c; color: white; box-sizing: border-box; font-size: 14px; }
+        .btn-gerar { background: #ff4d2d; color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; box-shadow: 0 4px 15px rgba(255, 77, 45, 0.3); }
         
-        /* BOX DE RESULTADO VERDE */
+        /* BOX DE RESULTADO VERDE ORIGINAL */
         .resultado-box { margin-top: 25px; background: #2c2c2c; padding: 20px; border-radius: 15px; border-left: 5px solid #4caf50; text-align: left; }
         .link-texto { color: #ff4d2d; font-size: 14px; word-break: break-all; text-decoration: none; display: block; margin-bottom: 15px; font-weight: bold; }
         .botoes-acao { display: flex; gap: 10px; }
@@ -21,7 +23,7 @@
         .btn-shopee { background: #ff4d2d; }
         .btn-copiar { background: #3d3d3d; }
 
-        /* GRUPOS SOCIAIS */
+        /* BOTÕES DE REDES SOCIAIS */
         .social-area { margin-top: 35px; border-top: 1px solid #333; padding-top: 25px; }
         .btn-social { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 15px; text-decoration: none; font-weight: bold; margin-bottom: 12px; font-size: 14px; color: white; }
         .btn-tg { background: #0088cc; }
@@ -32,16 +34,16 @@
     <div class="container">
         <img src="/static/logo.png" class="logo">
         <h2>Gerador da Sho</h2>
-        <p style="color:#888; font-size:13px; margin-bottom:20px;">Transforme produtos em ofertas exclusivas Cupons da Sho 🧡</p>
+        <span class="slogan">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</span>
         
         <form method="POST">
-            <input type="text" name="link_usuario" placeholder="Cole o link do produto aqui..." required>
+            <input type="text" name="link_usuario" placeholder="Cole o link do seu produto da Shopee aqui..." required>
             <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
 
         {% if link_novo %}
         <div class="resultado-box">
-            <p style="color:#4caf50; font-size:12px; margin-top:0;">✅ Link com desconto gerado com sucesso:</p>
+            <p style="color:#4caf50; font-size:12px; font-weight:bold; margin:0 0 10px 0;">✅ Link com desconto gerado com sucesso:</p>
             <a href="{{ link_novo }}" target="_blank" class="link-texto" id="linkFinal">{{ link_novo }}</a>
             <div class="botoes-acao">
                 <a href="{{ link_novo }}" target="_blank" class="btn-acao btn-shopee">ABRIR NA SHOPEE <i class="fas fa-shopping-bag"></i></a>
@@ -51,7 +53,7 @@
         {% endif %}
 
         <div class="social-area">
-            <p style="color: #666; font-size: 12px; margin-bottom: 15px;">Entre em nossos grupos de cupons grátis:</p>
+            <p style="color: #666; font-size: 11px; margin-bottom: 15px;">Entre em nossos grupos de cupons grátis:</p>
             <a href="https://t.me/seugrupo" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram"></i> Grupo no Telegram</a>
             <a href="https://wa.me/seugrupo" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
         </div>
