@@ -8,47 +8,42 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     <style>
         :root {
-            --bg-body: #050505; --texto-p: #ffffff; --texto-s: rgba(255, 255, 255, 0.6); --marca: #ee4d2d;
-            --glass: rgba(255, 255, 255, 0.08); --border: 1px solid rgba(255, 255, 255, 0.15);
+            --bg-body: #080808; --glass-bg: rgba(255, 255, 255, 0.05); --glass-border: rgba(255, 255, 255, 0.15);
+            --texto-p: #ffffff; --texto-s: rgba(255, 255, 255, 0.6); --marca: #ee4d2d;
         }
         .light-mode {
-            --bg-body: #f2f4f7; --texto-p: #1c1c1e; --texto-s: rgba(0, 0, 0, 0.5);
-            --glass: rgba(255, 255, 255, 0.5); --border: 1px solid rgba(255, 255, 255, 0.6);
+            --bg-body: #f0f2f5; --glass-bg: rgba(255, 255, 255, 0.45); --glass-border: rgba(255, 255, 255, 0.7);
+            --texto-p: #1c1c1e; --texto-s: rgba(0, 0, 0, 0.5);
         }
-        body { background: var(--bg-body); color: var(--texto-p); font-family: -apple-system, sans-serif; display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 20px 0; transition: 0.5s; overflow-x: hidden; }
-        .blob { position: absolute; width: 400px; height: 400px; background: radial-gradient(circle, rgba(238, 77, 45, 0.15) 0%, transparent 70%); filter: blur(70px); z-index: -1; animation: move 20s infinite alternate; }
-        @keyframes move { from { transform: translate(-30%, -30%); } to { transform: translate(30%, 30%); } }
+        body { background: var(--bg-body); color: var(--texto-p); font-family: -apple-system, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; transition: 0.5s; overflow: hidden; }
+        
+        /* BOLHAS DE COR FUNDO */
+        .blob { position: absolute; width: 350px; height: 350px; background: radial-gradient(circle, rgba(238, 77, 45, 0.2) 0%, transparent 70%); filter: blur(60px); z-index: -1; animation: move 20s infinite alternate; }
+        @keyframes move { from { transform: translate(-40%, -40%); } to { transform: translate(40%, 40%); } }
 
-        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 20px; border-radius: 45px; background: var(--glass); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); border: var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.3); position: relative; margin-bottom: 25px; }
-        .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-s); font-size: 20px; }
-        .logo { width: 100px; border-radius: 25%; margin-bottom: 10px; }
-        h1 { margin: 0 0 5px 0; font-size: 26px; font-weight: 800; letter-spacing: -1px; }
+        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: var(--glass-bg); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border: 1px solid var(--glass-border); box-shadow: 0 20px 40px rgba(0,0,0,0.3); position: relative; }
+        .theme-toggle { position: absolute; top: 20px; right: 25px; cursor: pointer; color: var(--texto-s); font-size: 20px; }
+        .logo { width: 100px; border-radius: 25%; margin-bottom: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+        h1 { margin: 0 0 5px 0; font-size: 24px; font-weight: 800; }
         .subtexto { color: var(--texto-s); font-size: 14px; margin-bottom: 25px; }
         
-        input { width: 100%; padding: 18px 25px; margin-bottom: 12px; border-radius: 50px; background: rgba(255,255,255,0.05); color: var(--texto-p); border: 1px solid rgba(255,255,255,0.1); box-sizing: border-box; font-size: 16px; outline: none; }
-        .btn-gerar { width: 100%; padding: 18px; margin-bottom: 10px; border-radius: 50px; border: none; background: linear-gradient(170deg, #ff7a59, #ee4d2d); color: white; font-weight: 800; cursor: pointer; font-size: 17px; box-shadow: 0 10px 20px rgba(238, 77, 45, 0.3); transition: 0.3s; }
+        input { width: 100%; padding: 18px 20px; margin-bottom: 15px; border-radius: 50px; background: rgba(255,255,255,0.05); color: var(--texto-p); border: 1px solid var(--glass-border); box-sizing: border-box; font-size: 16px; outline: none; }
+        .btn-gerar { width: 100%; padding: 18px; margin-bottom: 15px; border-radius: 50px; border: none; background: linear-gradient(145deg, #ff5e3a, #ee4d2d); color: white; font-weight: 700; cursor: pointer; font-size: 16px; box-shadow: 0 10px 20px rgba(238, 77, 45, 0.3); }
 
-        /* RANKING LIQUID GLASS */
-        .ranking-container { width: 90%; max-width: 400px; }
-        .ranking-titulo { font-weight: 800; font-size: 18px; margin: 20px 0 15px 15px; display: block; }
-        .ranking-card { display: flex; align-items: center; gap: 15px; padding: 15px; border-radius: 35px; background: var(--glass); border: var(--border); backdrop-filter: blur(20px); margin-bottom: 15px; }
-        .prod-img { width: 70px; height: 70px; border-radius: 20px; object-fit: cover; background: #fff; }
-        .prod-info { flex: 1; overflow: hidden; }
-        .prod-nome { font-size: 13px; font-weight: 700; margin: 0 0 8px 0; color: var(--texto-p); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .prod-botoes { display: flex; gap: 10px; align-items: center; }
-        .link-ir { font-size: 11px; color: var(--marca); text-decoration: none; font-weight: 800; }
-        .btn-resgate { font-size: 10px; background: var(--marca); color: white; padding: 5px 12px; border-radius: 50px; text-decoration: none; font-weight: 900; text-transform: uppercase; }
-
-        .resultado { margin-top: 15px; padding: 20px; border-radius: 35px; background: rgba(255,255,255,0.05); border: var(--border); }
-        .sucesso-titulo { color: #30d158; font-weight: 800; font-size: 16px; display: block; margin-bottom: 10px; }
-        .link-text { color: var(--marca); font-weight: 700; word-break: break-all; font-size: 14px; display: block; margin-bottom: 15px; }
+        .resultado { margin-top: 20px; padding: 20px; border-radius: 30px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); animation: slide 0.5s ease; }
+        @keyframes slide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .sucesso { color: #30d158; font-weight: 700; display: block; margin-bottom: 10px; }
+        .link-text { color: var(--marca); font-weight: 600; word-break: break-all; font-size: 14px; display: block; margin-bottom: 15px; }
         .btn-acao { display: flex; gap: 10px; }
-        .btn-acao * { flex: 1; padding: 12px; border-radius: 50px; border: none; font-weight: 800; font-size: 12px; text-align: center; cursor: pointer; text-decoration: none; background: rgba(255,255,255,0.1); color: var(--texto-p); }
+        .btn-acao * { flex: 1; padding: 12px; border-radius: 50px; border: none; font-weight: 700; font-size: 13px; cursor: pointer; text-decoration: none; background: rgba(255,255,255,0.1); color: var(--texto-p); }
         .btn-abrir { background: var(--marca) !important; color: white !important; }
 
-        #avisoCopiado { visibility: hidden; background: rgba(48, 209, 88, 0.9); color: white; border-radius: 50px; padding: 12px 30px; position: fixed; bottom: 35px; font-weight: 800; z-index: 100; backdrop-filter: blur(10px); }
-        #avisoCopiado.show { visibility: visible; animation: fadeinout 2s; }
-        @keyframes fadeinout { 0%, 100% { opacity: 0; transform: scale(0.9); } 20%, 80% { opacity: 1; transform: scale(1); } }
+        .canais { margin-top: 30px; border-top: 1px solid var(--glass-border); padding-top: 20px; }
+        .btn-social { display: block; width: 100%; padding: 12px; border-radius: 50px; font-weight: 700; color: white !important; text-decoration: none; margin-bottom: 10px; font-size: 14px; }
+        .btn-tg { background: #0088cc; } .btn-wa { background: #34c759; }
+        #aviso { visibility: hidden; background: #30d158; color: white; border-radius: 50px; padding: 12px 25px; position: fixed; bottom: 30px; font-weight: 700; }
+        #aviso.show { visibility: visible; animation: fade 2s; }
+        @keyframes fade { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -57,19 +52,19 @@
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
         <img src="{{ url_for('static', filename='logo.png') }}" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">Produtos exclusivos Cupons da Sho 🧡</p>
+        <p class="subtexto">Links exclusivos Cupons da Sho 🧡</p>
         <form method="POST">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required>
             <button type="submit" class="btn-gerar">{% if link_novo %} GERAR OUTRO {% else %} GERAR LINK {% endif %}</button>
         </form>
-        {% if link_novo %}<div class="resultado"><span class="sucesso-titulo">✅ Link gerado!</span><span class="link-text" id="meuLink">{{ link_novo }}</span><div class="btn-acao"><a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR 🛍️</a><button onclick="copiarLink()">COPIAR</button></div></div>{% endif %}
+        {% if link_novo %}<div class="resultado"><span class="sucesso">✅ Link gerado!</span><span class="link-text" id="meuLink">{{ link_novo }}</span><div class="btn-acao"><a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR</a><button onclick="copiar()">COPIAR</button></div></div>{% endif %}
+        <div class="canais"><a href="https://t.me/cuponsdasho" class="btn-social btn-tg">Telegram</a><a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" class="btn-social btn-wa">WhatsApp</a></div>
     </div>
-    {% if ranking %}<div class="ranking-container"><span class="ranking-titulo">Últimos links gerados 💎</span>{% for item in ranking %}<div class="ranking-card"><img src="{{ item.imagem }}" class="prod-img"><div class="prod-info"><p class="prod-nome">{{ item.titulo }}</p><div class="prod-botoes"><a href="{{ item.link }}" target="_blank" class="link-ir">Ir para o produto</a><a href="{{ item.link }}" target="_blank" class="btn-resgate">Resgate</a></div></div></div>{% endfor %}</div>{% endif %}
+    <div id="aviso">Copiado! ✔️</div>
     <script>
-        function toggleTheme() { document.body.classList.toggle('light-mode'); const icon = document.getElementById('theme-icon'); if (document.body.classList.contains('light-mode')) { icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light'); } else { icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark'); } }
-        window.onload = () => { if (localStorage.getItem('theme') === 'light') { document.body.classList.add('light-mode'); document.getElementById('theme-icon').classList.replace('fa-sun', 'fa-moon'); } }
-        function copiarLink() { const texto = document.getElementById('meuLink').innerText; const inputTemporario = document.createElement("textarea"); inputTemporario.value = texto; document.body.appendChild(inputTemporario); inputTemporario.select(); document.execCommand("copy"); document.body.removeChild(inputTemporario); const x = document.getElementById("avisoCopiado"); x.className = "show"; setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000); }
+        function toggleTheme() { document.body.classList.toggle('light-mode'); const i = document.getElementById('theme-icon'); if (document.body.classList.contains('light-mode')) { i.classList.replace('fa-sun','fa-moon'); localStorage.setItem('t','l'); } else { i.classList.replace('fa-moon','fa-sun'); localStorage.setItem('t','d'); } }
+        window.onload = () => { if (localStorage.getItem('t') === 'l') { document.body.classList.add('light-mode'); document.getElementById('theme-icon').classList.replace('fa-sun','fa-moon'); } }
+        function copiar() { const t = document.getElementById('meuLink').innerText; const i = document.createElement("textarea"); i.value = t; document.body.appendChild(i); i.select(); document.execCommand("copy"); document.body.removeChild(i); const x = document.getElementById("aviso"); x.className = "show"; setTimeout(() => { x.className = ""; }, 2000); }
     </script>
-    <div id="avisoCopiado">Copiado! ✔️</div>
 </body>
 </html>
