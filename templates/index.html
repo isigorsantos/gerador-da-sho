@@ -7,36 +7,40 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body { background-color: #121212; color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .container { text-align: center; width: 90%; max-width: 400px; padding: 20px; }
-        .logo { width: 120px; height: auto; margin-bottom: 10px; border-radius: 20px; filter: drop-shadow(0 0 10px rgba(238, 77, 45, 0.3)); }
         
-        h1 { margin-bottom: 8px; font-weight: 800; font-size: 28px; animation: fadeIn 0.8s ease; }
+        /* Ajuste de padding no container para ganhar espaço */
+        .container { text-align: center; width: 90%; max-width: 400px; padding: 10px 20px; }
         
-        /* --- SLOGAN MELHORADO --- */
+        /* Aproximando o logo do título */
+        .logo { width: 110px; height: auto; margin-bottom: 5px; border-radius: 20px; filter: drop-shadow(0 0 10px rgba(238, 77, 45, 0.3)); }
+        
+        h1 { margin-bottom: 2px; font-weight: 800; font-size: 26px; animation: fadeIn 0.8s ease; }
+        
+        /* Slogan mais próximo e com menos margem inferior */
         .subtexto { 
-            color: #ccc; /* Mais claro para melhor leitura */
-            font-size: 16px; /* Aumentado */
-            margin-bottom: 35px; 
-            line-height: 1.6; 
-            padding: 0 15px;
+            color: #ccc; 
+            font-size: 15px; 
+            margin-bottom: 20px; 
+            line-height: 1.4; 
+            padding: 0 10px;
             font-weight: 500;
             display: block;
-            animation: subir-suave 1.2s ease; /* Entrada elegante */
+            animation: subir-suave 1.2s ease;
         }
 
         @keyframes subir-suave {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* ------------------------ */
         
-        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #333; background-color: #1e1e1e; color: white; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s; }
+        /* Campo de link e botão mais integrados */
+        input { width: 100%; padding: 14px; margin-bottom: 12px; border-radius: 12px; border: 1px solid #333; background-color: #1e1e1e; color: white; box-sizing: border-box; font-size: 16px; outline: none; }
         input:focus { border-color: #ee4d2d; }
         
         .btn-gerar { 
-            width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: none; 
+            width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 12px; border: none; 
             background: #ee4d2d; color: white; font-weight: bold; cursor: pointer; font-size: 16px; 
-            transition: 0.3s; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); position: relative; overflow: hidden;
+            position: relative; overflow: hidden; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.2);
         }
         .btn-gerar::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
@@ -45,37 +49,39 @@
         }
         @keyframes brilho-passando { 0% { left: -100%; } 100% { left: 100%; } }
         
-        .resultado { margin-top: 25px; padding: 20px; background-color: #1e1e1e; border-radius: 16px; border: 1px solid #333; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Reduzindo a distância do box de resultado */
+        .resultado { margin-top: 15px; padding: 18px; background-color: #1e1e1e; border-radius: 16px; border: 1px solid #333; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
         
         .sucesso-titulo {
             display: block;
             color: #28a745; 
-            font-size: 18px; 
+            font-size: 17px; 
             font-weight: 800;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             animation: pulso-vitoria 0.8s ease-out;
         }
         @keyframes pulso-vitoria {
             0% { transform: scale(0.95); opacity: 0; }
-            50% { transform: scale(1.05); }
+            50% { transform: scale(1.03); }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .link-text { color: #ee4d2d; font-weight: bold; word-break: break-all; display: block; margin-bottom: 15px; font-size: 15px; }
-        .btn-acao { display: flex; gap: 10px; }
-        .btn-acao a, .btn-acao button { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; }
+        .link-text { color: #ee4d2d; font-weight: bold; word-break: break-all; display: block; margin-bottom: 12px; font-size: 14px; }
+        .btn-acao { display: flex; gap: 8px; }
+        .btn-acao a, .btn-acao button { flex: 1; padding: 11px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 13px; text-decoration: none; display: flex; align-items: center; justify-content: center; text-align: center; }
         .btn-abrir { background-color: #ee4d2d; color: white; }
         .btn-copiar { background-color: #2a2a2a; color: #ccc; border: 1px solid #333; }
 
-        .canais-section { margin-top: 40px; border-top: 1px solid #333; padding-top: 25px; padding-bottom: 20px; width: 100%; }
-        .canais-botoes { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-        .btn-social { width: 100%; max-width: 280px; color: white !important; text-decoration: none; padding: 12px 20px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 12px; font-weight: bold; font-size: 14px; }
+        /* Aproximando a seção de canais */
+        .canais-section { margin-top: 25px; border-top: 1px solid #333; padding-top: 15px; width: 100%; }
+        .canais-botoes { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+        .btn-social { width: 100%; max-width: 280px; color: white !important; text-decoration: none; padding: 11px 18px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-weight: bold; font-size: 14px; }
         .btn-tg { background-color: #0088cc; }
         .btn-wa { background-color: #25d366; }
-        .icon-social-img { width: 24px; height: 24px; border-radius: 50%; object-fit: contain; }
+        .icon-social-img { width: 22px; height: 22px; border-radius: 50%; object-fit: contain; }
 
-        #avisoCopiado { visibility: hidden; min-width: 200px; background-color: #28a745; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 99; bottom: 30px; font-weight: bold; }
+        #avisoCopiado { visibility: hidden; min-width: 180px; background-color: #28a745; color: #fff; text-align: center; border-radius: 50px; padding: 10px; position: fixed; z-index: 99; bottom: 30px; font-weight: bold; font-size: 14px; }
         #avisoCopiado.show { visibility: visible; animation: fadeinout 2s; }
         @keyframes fadeinout { 0%, 100% { opacity: 0; } 20%, 80% { opacity: 1; } }
     </style>
@@ -103,7 +109,7 @@
         {% endif %}
 
         <div class="canais-section">
-            <span style="color: #888; font-size: 13px; margin-bottom: 15px; display: block;">Entre em nossos grupos de cupons grátis:</span>
+            <span style="color: #888; font-size: 12px; margin-bottom: 12px; display: block;">Entre em nossos grupos de cupons grátis:</span>
             <div class="canais-botoes">
                 <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
                     <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="Telegram">
