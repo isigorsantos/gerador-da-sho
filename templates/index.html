@@ -34,17 +34,17 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
-            /* CORREÇÃO DO SCROLL: Mudado de center para flex-start */
+            /* CORREÇÃO DO SCROLL: Alinhado ao topo para evitar pulos ao carregar resultado */
             justify-content: flex-start; 
             min-height: 100vh; 
             margin: 0; 
-            padding: 40px 0; /* Espaço para não grudar no topo */
+            padding: 5vh 0;
             transition: 0.5s;
-            overflow-y: auto; /* Garante que o scroll funcione */
+            overflow-y: auto;
         }
 
         .blob {
-            position: fixed; /* Fixo no fundo para não subir com o scroll */
+            position: fixed;
             width: 350px; height: 350px;
             background: radial-gradient(circle, rgba(238, 77, 45, 0.3) 0%, transparent 70%);
             filter: blur(60px); border-radius: 50%; z-index: -1; animation: move 18s infinite alternate; opacity: 0.7;
@@ -127,8 +127,7 @@
     </style>
 </head>
 <body>
-    <div class="blob" style="top: -10%; left: -10%;"></div>
-    <div class="blob" style="bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(255, 180, 40, 0.3) 0%, transparent 70%);"></div>
+    <div class="blob"></div>
 
     <div class="container">
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
@@ -146,8 +145,8 @@
                 <span class="sucesso-titulo">✅ Link gerado com sucesso!</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
-                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR 🛍️</a>
-                    <button onclick="copiarLink()">COPIAR</button>
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
+                    <button onclick="copiarLink()">COPIAR LINK</button>
                 </div>
             </div>
         {% endif %}
