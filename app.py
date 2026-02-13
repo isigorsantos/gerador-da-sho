@@ -3,6 +3,7 @@ import time
 import hashlib
 import requests
 import json
+import re
 from urllib.parse import urlparse
 
 app = Flask(__name__)
@@ -15,14 +16,30 @@ ULTIMOS_PRODUTOS = [] # Memória dos últimos 5 links
 PARTNER_ID = 18322310004
 PARTNER_KEY = "UIODYHCTHG2UZJLKOEP5ZINNEFRB3KHP"
 
+def obter_detalhes_reais(url):
+    """Função que busca o título e a imagem real do produto na Shopee"""
+    try:
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'}
+        response = requests.get(url, headers=headers, timeout=10)
+        html = response.text
+        
+        # Busca o título (og:title)
+        titulo_match = re.search(r'<meta property="og:title" content="(.*?)"', html)
+        titulo = titulo_match.group(1) if titulo_match else "Produto Shopee"
+        
+        # Busca a imagem (og:image)
+        imagem_match = re.search(r'<meta property="og:image" content="(.*?)"', html)
+        imagem = imagem_match.group(1) if imagem_match else "https://cf.shopee.com.br/file/857e2333f283597f8059080b06b02005"
+        
+        return titulo, imagem
+    except:
+        return "Produto Verificado 🧡", "https://cf.shopee.com.br/file/857e2333f283597f8059080b06b02005"
+
 def expandir_e_limpar(url_usuario):
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
         response = requests.get(url_usuario, allow_redirects=True, timeout=10, headers=headers)
         url_final = response.url
-        if "shopee.com.br" in url_final:
-            parsed = urlparse(url_final)
-            return f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
         return url_final
     except:
         return url_usuario
@@ -43,10 +60,10 @@ def converter_shopee(url_original):
         response = requests.post(url_api, headers=headers, data=payload_str)
         dados = response.json()
         if "data" in dados and dados["data"] and dados["data"]["generateShortLink"]:
-            return dados["data"]["generateShortLink"]["shortLink"]
-        return None
+            return dados["data"]["generateShortLink"]["shortLink"], url_limpa
+        return None, None
     except:
-        return None
+        return None, None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -58,19 +75,25 @@ def index():
     if request.method == 'POST':
         url_input = request.form.get('link_usuario', '').strip()
         if url_input:
-            resultado = converter_shopee(url_input)
-            if resultado and resultado.startswith("http"):
-                # LIMPEZA DO LINK: Remove o ?lp=aff e qualquer outro sufixo
-                link_final = resultado.split('?')[0]
+            resultado_link, url_real = converter_shopee(url_input)
+            if resultado_link and resultado_link.startswith("http"):
+                # LIMPEZA DO LINK: Remove o ?lp=aff
+                link_final = resultado_link.split('?')[0]
                 
-                # ADICIONA AO RANKING (Dados simplificados do produto)
+                # BUSCA OS DETALHES REAIS (Foto e Nome)
+                titulo_real, foto_real = obter_detalhes_reais(url_real)
+                
+                # ADICIONA AO RANKING
                 novo_item = {
                     'link': link_final,
-                    'titulo': "Produto Verificado Cupons da Sho 🧡", 
-                    'imagem': "https://cf.shopee.com.br/file/857e2333f283597f8059080b06b02005"
+                    'titulo': titulo_real, 
+                    'imagem': foto_real
                 }
-                if novo_item not in ULTIMOS_PRODUTOS:
+                
+                # Verifica se o link já está na lista para não repetir
+                if not any(d['link'] == link_final for d in ULTIMOS_PRODUTOS):
                     ULTIMOS_PRODUTOS.insert(0, novo_item)
+                
                 if len(ULTIMOS_PRODUTOS) > 5:
                     ULTIMOS_PRODUTOS.pop()
             else:
