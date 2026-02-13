@@ -8,13 +8,14 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     
     <style>
-        /* --- VARIÁVEIS PREMIUM --- */
+        /* --- VARIÁVEIS COM BRILHO INTENSO --- */
         :root {
-            --bg-body: #050505;
+            --bg-body: #050505; /* Fundo mais escuro para o brilho estourar */
             --texto-principal: #ffffff;
             --texto-secundario: rgba(255, 255, 255, 0.7);
             --cor-marca: #ee4d2d;
-            --glass-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 20px 40px rgba(0,0,0,0.4);
+            /* Sombras internas que criam o efeito 3D líquido */
+            --glass-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), inset 0 -5px 20px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.4);
             --glass-border: 1px solid rgba(255, 255, 255, 0.2);
             --bg-glass-base: rgba(255, 255, 255, 0.08);
         }
@@ -23,7 +24,7 @@
             --bg-body: #eef2f6;
             --texto-principal: #1c1c1e;
             --texto-secundario: rgba(0, 0, 0, 0.6);
-            --glass-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.9), 0 15px 35px rgba(0,0,0,0.1);
+            --glass-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -5px 15px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.1);
             --glass-border: 1px solid rgba(255, 255, 255, 0.6);
             --bg-glass-base: rgba(255, 255, 255, 0.4);
         }
@@ -36,99 +37,115 @@
             min-height: 100vh; margin: 0; overflow: hidden; transition: 0.5s;
         }
 
-        /* BOLHAS DE COR NO FUNDO */
+        /* BOLHAS DE COR MAIS FORTES NO FUNDO */
         .blob {
             position: absolute; width: 350px; height: 350px;
             background: radial-gradient(circle, rgba(238, 77, 45, 0.3) 0%, transparent 70%);
-            filter: blur(60px); border-radius: 50%; z-index: -1; animation: move 18s infinite alternate;
+            filter: blur(60px); border-radius: 50%; z-index: -1; animation: move 18s infinite alternate; opacity: 0.7;
         }
         @keyframes move { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(40%, 40%) rotate(360deg); } }
 
-        /* --- CONTAINER LÍQUIDO --- */
+        /* --- CONTAINER LÍQUIDO SUPREMO --- */
         .container { 
             text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; 
-            border-radius: 45px;
+            border-radius: 45px; /* Curva bem acentuada */
+            
+            /* O segredo do brilho está aqui: múltiplas sombras internas */
             background: var(--bg-glass-base);
             box-shadow: var(--glass-shadow);
             border: var(--glass-border);
-            backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%);
+            
+            backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); /* Desfoque mais forte e cores vivas */
             position: relative;
         }
         
-        .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; transition: 0.3s; z-index: 5; }
+        .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; transition: 0.3s; z-index: 5; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
         .logo { width: 110px; height: auto; margin-bottom: 15px; border-radius: 25%; box-shadow: 0 10px 25px rgba(238, 77, 45, 0.3); }
-        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; }
-        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
         
+        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; font-weight: 500; }
+        
+        /* Inputs CÁPSULA com brilho */
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
             background: rgba(255,255,255,0.03); color: var(--texto-principal); 
-            border: 1px solid rgba(255,255,255,0.1); box-sizing: border-box; font-size: 16px; outline: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 2px 3px rgba(255,255,255,0.1); /* Brilho interno sutil */
+            box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s;
         }
-
-        /* --- BOTÃO COM O BRILHO QUE PASSA --- */
+        .light-mode input { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); box-shadow: inset 0 2px 3px rgba(255,255,255,0.8); }
+        input:focus { border-color: var(--cor-marca); background: rgba(238, 77, 45, 0.05); box-shadow: 0 0 0 3px rgba(238, 77, 45, 0.2), inset 0 2px 3px rgba(255,255,255,0.2); }
+        
+        /* Botão Laranja LÍQUIDO */
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
+            /* Gradiente mais vivo e com reflexo superior */
             background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317);
             box-shadow: inset 0 2px 2px rgba(255,255,255,0.4), 0 15px 30px rgba(238, 77, 45, 0.4);
-            color: white; font-weight: 800; cursor: pointer; font-size: 17px; 
-            position: relative; overflow: hidden; transition: 0.3s;
+            color: white; font-weight: 800; cursor: pointer; font-size: 17px; position: relative; overflow: hidden; transition: 0.3s;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
+        .btn-gerar:active { transform: scale(0.98); box-shadow: inset 0 4px 5px rgba(0,0,0,0.2), 0 5px 15px rgba(238, 77, 45, 0.3); }
 
-        /* Essa é a "animação branca" que passa pelo botão */
-        .btn-gerar::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: brilho-passando 2.5s infinite linear;
-        }
-        @keyframes brilho-passando { 
-            0% { left: -100%; } 
-            100% { left: 100%; } 
-        }
-
-        /* --- MENSAGEM DE SUCESSO PULSANTE --- */
+        /* Resultado Glass */
         .resultado { 
             margin-top: 25px; padding: 25px; border-radius: 35px; 
             background: rgba(255,255,255,0.05); 
             box-shadow: var(--glass-shadow); border: var(--glass-border);
-            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efeito elástico */
         }
         @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
         
-        .sucesso-titulo { 
-            color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px;
-            animation: pulso-vitoria 0.8s ease-out; /* Animação que você pediu */
-        }
-        @keyframes pulso-vitoria {
-            0% { transform: scale(0.95); opacity: 0; }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
+        .sucesso-titulo { color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px; text-shadow: 0 0 15px rgba(48, 209, 88, 0.4); }
+        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; text-shadow: 0 0 10px rgba(238, 77, 45, 0.3); }
+        
         .btn-acao { display: flex; gap: 12px; }
-        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1); }
-        .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; color: white !important; }
+        .btn-acao a, .btn-acao button { 
+            flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; 
+            font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.08); color: var(--texto-principal); 
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.1);
+            transition: 0.3s;
+        }
+        .light-mode .btn-copiar { background: rgba(255,255,255,0.7); box-shadow: inset 0 2px 4px rgba(255,255,255,1); border: 1px solid rgba(0,0,0,0.05); }
+        .btn-abrir { 
+            background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; 
+            box-shadow: inset 0 2px 2px rgba(255,255,255,0.4), 0 8px 15px rgba(238, 77, 45, 0.3) !important;
+            color: white !important; border: none !important;
+        }
 
+        /* Canais Liquid Style */
         .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .btn-social { width: 100%; max-width: 280px; padding: 14px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; color: white !important; text-decoration: none; margin-bottom: 12px; font-size: 15px; }
-        .btn-tg { background: #0088cc; } .btn-wa { background: #34c759; }
+        .btn-social { 
+            width: 100%; max-width: 280px; padding: 14px; border-radius: 50px; 
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
+            font-weight: 700; font-size: 15px; margin-bottom: 12px; transition: 0.3s; color: white !important; text-decoration: none;
+            box-shadow: inset 0 2px 2px rgba(255,255,255,0.3), 0 10px 20px rgba(0,0,0,0.2);
+            position: relative; overflow: hidden;
+        }
+        .btn-tg { background: linear-gradient(145deg, #00a8ff, #0088cc); }
+        .btn-wa { background: linear-gradient(145deg, #4cd964, #34c759); }
+        .btn-social:hover { transform: translateY(-3px) scale(1.02); box-shadow: inset 0 2px 2px rgba(255,255,255,0.5), 0 15px 30px rgba(0,0,0,0.3); }
+        .icon-social-img { width: 24px; height: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
-        #avisoCopiado { visibility: hidden; background: rgba(48, 209, 88, 0.8); color: white; border-radius: 50px; padding: 12px 30px; position: fixed; bottom: 40px; font-weight: 800; z-index: 100; backdrop-filter: blur(20px); }
-        #avisoCopiado.show { visibility: visible; animation: pop 2s; }
-        @keyframes pop { 0%, 100% { opacity: 0; transform: scale(0.9); } 20%, 80% { opacity: 1; transform: scale(1); } }
+        #avisoCopiado { visibility: hidden; min-width: 160px; background: rgba(48, 209, 88, 0.8); backdrop-filter: blur(20px) saturate(150%); color: white; text-align: center; border-radius: 50px; padding: 12px; position: fixed; bottom: 40px; font-weight: 800; box-shadow: 0 10px 30px rgba(48, 209, 88, 0.4), inset 0 2px 2px rgba(255,255,255,0.4); z-index: 99; border: 1px solid rgba(255,255,255,0.2); }
+        #avisoCopiado.show { visibility: visible; animation: fadeinout 2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes fadeinout { 0%, 100% { opacity: 0; bottom: 20px; transform: scale(0.9); } 15%, 85% { opacity: 1; bottom: 40px; transform: scale(1); } }
     </style>
 </head>
 <body>
     <div class="blob" style="top: -10%; left: -10%;"></div>
-    <div class="blob" style="bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(255, 180, 40, 0.3) 0%, transparent 70%);"></div>
+    <div class="blob" style="bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(255, 180, 40, 0.3) 0%, transparent 70%); animation-delay: -5s;"></div>
 
     <div class="container">
-        <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <i id="theme-icon" class="fas fa-sun"></i>
+        </div>
+
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">Produtos exclusivos Cupons da Sho 🧡</p>
+        <p class="subtexto">Transforme links da Shopee em ofertas exclusivas 🧡</p>
 
         <form method="POST">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
@@ -143,15 +160,22 @@
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
                     <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR 🛍️</a>
-                    <button onclick="copiarLink()">COPIAR</button>
+                    <button onclick="copiarLink()" class="btn-copiar">COPIAR</button>
                 </div>
             </div>
         {% endif %}
 
         <div class="canais-section">
+            <span style="color: var(--texto-secundario); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
-                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">Telegram</a>
-                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">WhatsApp</a>
+                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
+                    <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="TG">
+                    Telegram
+                </a>
+                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">
+                    <img src="{{ url_for('static', filename='whatsapp_icon.png') }}" class="icon-social-img" alt="WA">
+                    WhatsApp
+                </a>
             </div>
         </div>
     </div>
