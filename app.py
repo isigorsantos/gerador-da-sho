@@ -3,45 +3,26 @@ import time
 import hashlib
 import requests
 import json
-import re
 from urllib.parse import urlparse
 
 app = Flask(__name__)
 
+# --- CONFIGURAÇÕES ---
 MODO_MANUTENCAO = False 
-ULTIMOS_PRODUTOS = [] 
 
+# --- SEUS DADOS DA API ---
 PARTNER_ID = 18322310004
 PARTNER_KEY = "UIODYHCTHG2UZJLKOEP5ZINNEFRB3KHP"
-
-def obter_detalhes_reais(url):
-    """Busca o nome e a foto real do produto de forma mais robusta"""
-    try:
-        # Cabeçalhos de 'Pessoa Real' para não ser bloqueado
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0.3 Mobile/15E148 Safari/604.1',
-            'Accept-Language': 'pt-BR,pt;q=0.9'
-        }
-        response = requests.get(url, headers=headers, timeout=15)
-        html = response.text
-        
-        # Pega o título real
-        titulo_match = re.search(r'"name":"(.*?)"', html) or re.search(r'<title>(.*?)</title>', html)
-        titulo = titulo_match.group(1).split(' | ')[0] if titulo_match else "Oferta Cupons da Sho 🧡"
-        
-        # Pega a foto real (tenta o link de alta qualidade primeiro)
-        imagem_match = re.search(r'https://cf.shopee.com.br/file/(.*?)_tn', html) or re.search(r'https://cf.shopee.com.br/file/(.*?)"', html)
-        imagem = imagem_match.group(0).replace('"', '') if imagem_match else "https://cf.shopee.com.br/file/857e2333f283597f8059080b06b02005"
-        
-        return titulo[:60] + "...", imagem
-    except:
-        return "Produto Verificado 🧡", "https://cf.shopee.com.br/file/857e2333f283597f8059080b06b02005"
 
 def expandir_e_limpar(url_usuario):
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
         response = requests.get(url_usuario, allow_redirects=True, timeout=10, headers=headers)
-        return response.url
+        url_final = response.url
+        if "shopee.com.br" in url_final:
+            parsed = urlparse(url_final)
+            return f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
+        return url_final
     except:
         return url_usuario
 
@@ -61,10 +42,10 @@ def converter_shopee(url_original):
         response = requests.post(url_api, headers=headers, data=payload_str)
         dados = response.json()
         if "data" in dados and dados["data"] and dados["data"]["generateShortLink"]:
-            return dados["data"]["generateShortLink"]["shortLink"], url_limpa
-        return None, None
+            return dados["data"]["generateShortLink"]["shortLink"]
+        return None
     except:
-        return None, None
+        return None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -76,24 +57,14 @@ def index():
     if request.method == 'POST':
         url_input = request.form.get('link_usuario', '').strip()
         if url_input:
-            resultado_link, url_real = converter_shopee(url_input)
-            if resultado_link and resultado_link.startswith("http"):
-                # LIMPEZA TOTAL: Corta o ?lp=aff
-                link_final = resultado_link.split('?')[0]
-                
-                # PEGA OS DADOS REAIS
-                titulo_real, foto_real = obter_detalhes_reais(url_real)
-                
-                novo_item = {'link': link_final, 'titulo': titulo_real, 'imagem': foto_real}
-                
-                if not any(d['link'] == link_final for d in ULTIMOS_PRODUTOS):
-                    ULTIMOS_PRODUTOS.insert(0, novo_item)
-                if len(ULTIMOS_PRODUTOS) > 5:
-                    ULTIMOS_PRODUTOS.pop()
+            resultado = converter_shopee(url_input)
+            if resultado and resultado.startswith("http"):
+                # LIMPEZA DO LINK: Remove o ?lp=aff e qualquer outro sufixo
+                link_final = resultado.split('?')[0]
             else:
-                erro = "Link inválido ou não suportado."
+                erro = "Erro ao converter link. Tente outro!"
                 
-    return render_template('index.html', link_novo=link_final, erro=erro, ranking=ULTIMOS_PRODUTOS)
+    return render_template('index.html', link_novo=link_final, erro=erro)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
