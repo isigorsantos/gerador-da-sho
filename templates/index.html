@@ -14,7 +14,41 @@
         input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #333; background-color: #1e1e1e; color: white; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s; }
         input:focus { border-color: #ee4d2d; }
         
-        .btn-gerar { width: 100%; padding: 15px; border-radius: 12px; border: none; background: #ee4d2d; color: white; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); }
+        /* BOTÃO LARANJA COM EFEITO DE BRILHO */
+        .btn-gerar { 
+            width: 100%; 
+            padding: 15px; 
+            margin-bottom: 15px; 
+            border-radius: 12px; 
+            border: none; 
+            background: #ee4d2d; 
+            color: white; 
+            font-weight: bold; 
+            cursor: pointer; 
+            font-size: 16px; 
+            transition: 0.3s; 
+            box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ANIMAÇÃO DO BRILHO QUE PASSA */
+        .btn-gerar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: brilho-passando 2.5s infinite linear;
+        }
+
+        @keyframes brilho-passando {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
         .btn-gerar:hover { background-color: #d73211; transform: scale(1.02); }
         
         .resultado { margin-top: 25px; padding: 20px; background-color: #1e1e1e; border-radius: 16px; border: 1px solid #333; animation: fadeIn 0.5s ease; }
@@ -31,7 +65,6 @@
         .btn-copiar { background-color: #2a2a2a; color: #ccc; border: 1px solid #333; }
         .btn-copiar:hover { background-color: #333; color: white; }
 
-        /* SEÇÃO DE CANAIS ATUALIZADA */
         .canais-section { margin-top: 40px; border-top: 1px solid #333; padding-top: 25px; padding-bottom: 20px; width: 100%; }
         .canais-titulo { color: #888; font-size: 13px; margin-bottom: 15px; display: block; }
         
@@ -57,10 +90,8 @@
         .btn-wa { background-color: #25d366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); }
         .btn-social:hover { transform: translateY(-2px); filter: brightness(1.1); }
         
-        /* Estilo dos novos ícones */
         .icon-social-img { width: 24px; height: 24px; border-radius: 50%; object-fit: contain; }
 
-        /* AVISO DE COPIADO */
         #avisoCopiado { visibility: hidden; min-width: 200px; background-color: #28a745; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 1; bottom: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         #avisoCopiado.show { visibility: visible; animation: fadeinout 2s; }
         @keyframes fadeinout { 0%, 100% { opacity: 0; bottom: 0; } 20%, 80% { opacity: 1; bottom: 30px; } }
