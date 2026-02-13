@@ -7,8 +7,9 @@ from urllib.parse import urlparse
 
 app = Flask(__name__)
 
-# --- INTERRUPTOR DE MANUTENÇÃO ---
+# --- CONFIGURAÇÕES ---
 MODO_MANUTENCAO = False 
+ULTIMOS_PRODUTOS = [] # Memória dos últimos 5 links
 
 # --- SEUS DADOS DA API ---
 PARTNER_ID = 18322310004
@@ -43,9 +44,9 @@ def converter_shopee(url_original):
         dados = response.json()
         if "data" in dados and dados["data"] and dados["data"]["generateShortLink"]:
             return dados["data"]["generateShortLink"]["shortLink"]
-        return "Erro na resposta da Shopee."
-    except Exception as e:
-        return f"Erro no sistema: {str(e)}"
+        return None
+    except:
+        return None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -59,11 +60,23 @@ def index():
         if url_input:
             resultado = converter_shopee(url_input)
             if resultado and resultado.startswith("http"):
-                # AQUI ESTÁ A CORREÇÃO: Remove o ?lp=aff e qualquer outro parâmetro
-                link_final = resultado.split('?')[0] 
+                # LIMPEZA DO LINK: Remove o ?lp=aff e qualquer outro sufixo
+                link_final = resultado.split('?')[0]
+                
+                # ADICIONA AO RANKING (Dados simplificados do produto)
+                novo_item = {
+                    'link': link_final,
+                    'titulo': "Produto Verificado Cupons da Sho 🧡", 
+                    'imagem': "https://cf.shopee.com.br/file/857e2333f283597f8059080b06b02005"
+                }
+                if novo_item not in ULTIMOS_PRODUTOS:
+                    ULTIMOS_PRODUTOS.insert(0, novo_item)
+                if len(ULTIMOS_PRODUTOS) > 5:
+                    ULTIMOS_PRODUTOS.pop()
             else:
-                erro = resultado
-    return render_template('index.html', link_novo=link_final, erro=erro)
+                erro = "Não conseguimos converter este link. Tente outro!"
+                
+    return render_template('index.html', link_novo=link_final, erro=erro, ranking=ULTIMOS_PRODUTOS)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
