@@ -10,54 +10,68 @@
     <style>
         :root {
             --bg-body: #050505;
-            --texto-p: #ffffff;
-            --texto-s: rgba(255, 255, 255, 0.7);
-            --marca: #ee4d2d;
-            --glass-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), 0 20px 40px rgba(0,0,0,0.4);
+            --texto-principal: #ffffff;
+            --texto-secundario: rgba(255, 255, 255, 0.7);
+            --cor-marca: #ee4d2d;
+            --glass-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), inset 0 -5px 20px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.4);
             --glass-border: 1px solid rgba(255, 255, 255, 0.2);
-            --bg-glass: rgba(255, 255, 255, 0.08);
+            --bg-glass-base: rgba(255, 255, 255, 0.08);
         }
 
         .light-mode {
             --bg-body: #eef2f6;
-            --texto-p: #1c1c1e;
-            --texto-s: rgba(0, 0, 0, 0.6);
-            --glass-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.9), 0 15px 35px rgba(0,0,0,0.1);
+            --texto-principal: #1c1c1e;
+            --texto-secundario: rgba(0, 0, 0, 0.6);
+            --glass-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -5px 15px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.1);
             --glass-border: 1px solid rgba(255, 255, 255, 0.6);
-            --bg-glass: rgba(255, 255, 255, 0.4);
+            --bg-glass-base: rgba(255, 255, 255, 0.4);
         }
 
         body { 
-            background-color: var(--bg-body); color: var(--texto-p); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            min-height: 100vh; margin: 0; overflow-x: hidden; transition: 0.5s;
+            background-color: var(--bg-body); 
+            color: var(--texto-principal); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            /* CORREÇÃO DO SCROLL: Mudado de center para flex-start */
+            justify-content: flex-start; 
+            min-height: 100vh; 
+            margin: 0; 
+            padding: 40px 0; /* Espaço para não grudar no topo */
+            transition: 0.5s;
+            overflow-y: auto; /* Garante que o scroll funcione */
         }
 
         .blob {
-            position: absolute; width: 350px; height: 350px;
+            position: fixed; /* Fixo no fundo para não subir com o scroll */
+            width: 350px; height: 350px;
             background: radial-gradient(circle, rgba(238, 77, 45, 0.3) 0%, transparent 70%);
-            filter: blur(60px); border-radius: 50%; z-index: -1; animation: move 18s infinite alternate;
+            filter: blur(60px); border-radius: 50%; z-index: -1; animation: move 18s infinite alternate; opacity: 0.7;
         }
-        @keyframes move { from { transform: translate(-50%, -50%); } to { transform: translate(40%, 40%); } }
+        @keyframes move { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(40%, 40%) rotate(360deg); } }
 
         .container { 
             text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; 
-            border-radius: 45px; background: var(--bg-glass); box-shadow: var(--glass-shadow);
-            border: var(--glass-border); backdrop-filter: blur(30px) saturate(150%);
-            -webkit-backdrop-filter: blur(30px) saturate(150%); position: relative;
+            border-radius: 45px;
+            background: var(--bg-glass-base);
+            box-shadow: var(--glass-shadow);
+            border: var(--glass-border);
+            backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%);
+            position: relative;
         }
         
-        .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-s); font-size: 22px; }
-        .logo { width: 110px; border-radius: 25%; margin-bottom: 15px; box-shadow: 0 10px 25px rgba(238, 77, 45, 0.3); }
-        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; }
-        .subtexto { color: var(--texto-s); font-size: 15px; margin-bottom: 30px; line-height: 1.4; }
+        .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; transition: 0.3s; z-index: 5; }
+        .logo { width: 110px; height: auto; margin-bottom: 15px; border-radius: 25%; }
+        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; }
+        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
         
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
-            background: rgba(255,255,255,0.05); color: var(--texto-p); border: 1px solid rgba(255,255,255,0.1);
-            box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s;
+            background: rgba(255,255,255,0.03); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 2px 3px rgba(255,255,255,0.1); box-sizing: border-box; font-size: 16px; outline: none;
         }
+
         .light-mode input { 
             background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); 
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); color: #1c1c1e;
@@ -65,95 +79,87 @@
 
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
-            background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%);
+            background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317);
             box-shadow: inset 0 2px 2px rgba(255,255,255,0.4), 0 15px 30px rgba(238, 77, 45, 0.4);
             color: white; font-weight: 800; cursor: pointer; font-size: 17px; position: relative; overflow: hidden;
         }
         .btn-gerar::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            animation: brilho 2.5s infinite linear;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            animation: brilho-passando 2.5s infinite linear;
         }
-        @keyframes brilho { 0% { left: -100%; } 100% { left: 100%; } }
+        @keyframes brilho-passando { 0% { left: -100%; } 100% { left: 100%; } }
 
         .resultado { 
-            margin-top: 25px; padding: 25px; border-radius: 35px; 
-            background: rgba(48, 209, 88, 0.05); 
-            border: 1px solid rgba(48, 209, 88, 0.2);
+            margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); 
+            box-shadow: var(--glass-shadow); border: var(--glass-border);
             animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* --- ANIMAÇÃO PULSANTE VAI E VEM --- */
         .sucesso-titulo { 
             color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px;
-            animation: pulso-vai-vem 1.5s infinite ease-in-out;
+            animation: pulso-vitoria 0.8s ease-out;
         }
-        @keyframes pulso-vai-vem {
-            0%, 100% { transform: scale(1); }
+        @keyframes pulso-vitoria {
+            0% { transform: scale(0.95); opacity: 0; }
             50% { transform: scale(1.05); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .link-text { color: var(--marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
-        
+        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
         .btn-acao { display: flex; gap: 12px; }
-        .btn-acao * { 
-            flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; 
-            font-size: 13px; text-decoration: none; display: flex; align-items: center; justify-content: center;
-            background: rgba(255,255,255,0.1); color: var(--texto-p); border: 1px solid rgba(255,255,255,0.1);
-        }
-        .btn-abrir { background: var(--marca) !important; color: white !important; }
+        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; color: white !important; }
 
         .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
-        .canais-texto { color: var(--texto-s); font-size: 14px; margin-bottom: 15px; display: block; font-weight: 600; }
         .btn-social { 
             width: 100%; max-width: 280px; padding: 14px; border-radius: 50px; 
             display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
             font-weight: 700; font-size: 15px; margin-bottom: 12px; transition: 0.3s; color: white !important; text-decoration: none;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: inset 0 2px 2px rgba(255,255,255,0.3), 0 10px 20px rgba(0,0,0,0.2);
         }
-        .btn-tg { background: #0088cc; } .btn-wa { background: #34c759; }
+        .btn-tg { background: linear-gradient(145deg, #00a8ff, #0088cc); }
+        .btn-wa { background: linear-gradient(145deg, #4cd964, #34c759); }
 
-        #avisoCopiado { visibility: hidden; background: #30d158; color: white; border-radius: 50px; padding: 12px 30px; position: fixed; bottom: 40px; font-weight: 800; z-index: 100; }
+        #avisoCopiado { visibility: hidden; min-width: 160px; background: rgba(48, 209, 88, 0.8); backdrop-filter: blur(20px); color: white; text-align: center; border-radius: 50px; padding: 12px; position: fixed; bottom: 40px; font-weight: 800; z-index: 100; }
         #avisoCopiado.show { visibility: visible; animation: pop 2s; }
-        @keyframes pop { 0%, 100% { opacity: 0; transform: scale(0.8); } 20%, 80% { opacity: 1; transform: scale(1); } }
+        @keyframes pop { 0%, 100% { opacity: 0; transform: scale(0.9); } 20%, 80% { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
-    <div class="blob"></div>
+    <div class="blob" style="top: -10%; left: -10%;"></div>
+    <div class="blob" style="bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(255, 180, 40, 0.3) 0%, transparent 70%);"></div>
+
     <div class="container">
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
-        <img src="{{ url_for('static', filename='logo.png') }}" class="logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
         <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
-        
         <form method="POST">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
-            <button type="submit" class="btn-gerar">{% if link_novo %} GERAR OUTRO DESCONTO ⚡ {% else %} GERAR LINK COM DESCONTO ⚡ {% endif %}</button>
+            <button type="submit" class="btn-gerar">
+                {% if link_novo %} GERAR OUTRO DESCONTO ⚡ {% else %} GERAR LINK COM DESCONTO ⚡ {% endif %}
+            </button>
         </form>
-
         {% if link_novo %}
             <div class="resultado">
                 <span class="sucesso-titulo">✅ Link gerado com sucesso!</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
-                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
-                    <button onclick="copiarLink()">COPIAR LINK</button>
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR 🛍️</a>
+                    <button onclick="copiarLink()">COPIAR</button>
                 </div>
             </div>
         {% endif %}
-
         <div class="canais-section">
-            <span class="canais-texto">Nossos grupos de cupons grátis 💛</span>
+            <span style="color: var(--texto-secundario); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Nossos grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram-plane"></i> Grupo no Telegram</a>
                 <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
             </div>
         </div>
     </div>
-
-    <div id="avisoCopiado">Link Copiado! ✔️</div>
-
+    <div id="avisoCopiado">Copiado! ✔️</div>
     <script>
         function toggleTheme() {
             const body = document.body; const icon = document.getElementById('theme-icon');
