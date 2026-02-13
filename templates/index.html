@@ -7,32 +7,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { background-color: #121212; color: white; font-family: 'Segoe UI', sans-serif; text-align: center; padding: 20px; margin: 0; }
-        .container { max-width: 450px; margin: auto; background: #1e1e1e; padding: 25px; border-radius: 25px; }
-        .logo { width: 120px; border-radius: 20px; margin-bottom: 20px; }
+        .container { max-width: 450px; margin: auto; background: #1e1e1e; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .logo { width: 100px; border-radius: 20px; margin-bottom: 20px; }
         
         input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; margin: 10px 0; background: #2c2c2c; color: white; box-sizing: border-box; }
         .btn-gerar { background: linear-gradient(45deg, #ff4d2d, #ff6a00); color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
         
-        /* BOX DE RESULTADO */
+        /* RESULTADO */
         .resultado-box { margin-top: 25px; background: #2c2c2c; padding: 20px; border-radius: 15px; border-left: 5px solid #4caf50; text-align: left; }
-        .link-gerado { color: #ff4d2d; font-size: 14px; word-break: break-all; text-decoration: none; display: block; margin-bottom: 20px; }
+        .link-gerado { color: #ff4d2d; font-size: 14px; word-break: break-all; text-decoration: none; display: block; margin-bottom: 15px; }
         .botoes-acao { display: flex; gap: 10px; }
         .btn-acao { flex: 1; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; text-decoration: none; text-align: center; font-size: 13px; }
         .btn-shopee { background: #ff4d2d; color: white; }
         .btn-copiar { background: #3d3d3d; color: white; }
 
-        /* REDES SOCIAIS */
-        .btn-social { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 15px; text-decoration: none; font-weight: bold; margin-top: 10px; }
+        /* SOCIAL */
+        .btn-social { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 15px; text-decoration: none; font-weight: bold; margin-top: 10px; font-size: 14px; }
         .btn-tg { background: #0088cc; color: white; }
         .btn-wa { background: #25d366; color: white; }
 
-        /* HISTÓRICO COM FOTO REAL */
+        /* RECENTES */
         .recent-container { margin-top: 40px; text-align: left; border-top: 1px solid #333; padding-top: 20px; }
         .recent-title { color: #ff4d2d; font-size: 13px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; }
         .recent-card { background: white; border-radius: 15px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: #333; }
-        .recent-img { width: 75px; height: 75px; border-radius: 10px; object-fit: cover; background: #f9f9f9; }
-        .recent-info { flex: 1; overflow: hidden; }
-        .recent-info h4 { font-size: 12px; margin: 0 0 8px 0; color: #222; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.3; }
+        .recent-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; }
+        .recent-info { flex: 1; }
+        .recent-info h4 { font-size: 12px; margin: 0 0 8px 0; height: 32px; overflow: hidden; line-height: 1.3; color: #222; }
         .recent-buttons { display: flex; gap: 8px; }
         .btn-card { flex: 1; padding: 7px; border-radius: 8px; font-size: 10px; font-weight: bold; text-align: center; text-decoration: none; }
         .btn-open { background: #fce4ec; color: #d81b60; }
@@ -61,9 +61,9 @@
         </div>
         {% endif %}
 
-        <div style="margin-top:30px;">
-            <a href="https://t.me/seugrupo" class="btn-social btn-tg"><i class="fab fa-telegram"></i> Grupo no Telegram</a>
-            <a href="https://wa.me/seugrupo" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
+        <div style="margin-top:25px;">
+            <a href="https://t.me/seugrupo" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram"></i> Grupo no Telegram</a>
+            <a href="https://wa.me/seugrupo" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
         </div>
 
         <div class="recent-container">
@@ -78,20 +78,19 @@
             navigator.clipboard.writeText(link).then(() => alert("Link copiado!"));
         }
 
-        const KEY = 'shopee_history_v3';
+        const STORAGE_KEY = 'shopee_v4';
 
         function save(link, title, img) {
-            let history = JSON.parse(localStorage.getItem(KEY) || "[]");
+            let history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
             history = history.filter(item => item.link !== link);
-            // SALVA A FOTO E O TÍTULO QUE VIERAM DO PYTHON
             history.unshift({ link, title, img: img || '/static/logo.png' });
-            localStorage.setItem(KEY, JSON.stringify(history.slice(0, 6)));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, 5)));
             render();
         }
 
         function render() {
             const list = document.getElementById('recent-list');
-            const history = JSON.parse(localStorage.getItem(KEY) || "[]");
+            const history = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
             list.innerHTML = history.map(item => `
                 <div class="recent-card">
                     <img src="${item.img}" class="recent-img" onerror="this.src='/static/logo.png'">
