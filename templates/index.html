@@ -3,94 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador da Sho - Cupons da Sho</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <title>Gerador da Sho</title>
     <style>
-        /* DESIGN ORIGINAL IGOR - RECUPERADO */
-        body { background-color: #121212; color: white; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
-        .container { max-width: 450px; margin: auto; background: #1e1e1e; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .logo { width: 100px; border-radius: 20px; margin-bottom: 20px; }
+        body { background-color: #121212; color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .container { text-align: center; width: 90%; max-width: 400px; padding: 20px; }
+        .logo { width: 120px; height: auto; margin-bottom: 10px; border-radius: 20px; filter: drop-shadow(0 0 10px rgba(238, 77, 45, 0.3)); }
+        h1 { margin-bottom: 5px; font-weight: 800; font-size: 26px; }
+        .subtexto { color: #888; font-size: 14px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
         
-        input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; margin: 10px 0; background: #2c2c2c; color: white; box-sizing: border-box; }
-        .btn-gerar { background: #ff4d2d; color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #333; background-color: #1e1e1e; color: white; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #ee4d2d; }
         
-        /* BOX DE RESULTADO VERDE */
-        .resultado-box { margin-top: 25px; background: #2c2c2c; padding: 20px; border-radius: 15px; border-left: 5px solid #4caf50; text-align: left; }
-        .link-texto { color: #ff4d2d; font-size: 14px; word-break: break-all; text-decoration: none; display: block; margin-bottom: 15px; font-weight: bold; }
-        .botoes-acao { display: flex; gap: 10px; }
-        .btn-acao { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; text-decoration: none; text-align: center; font-size: 13px; color: white; }
-        .btn-shopee { background: #ff4d2d; }
-        .btn-copiar { background: #3d3d3d; }
+        .btn-gerar { width: 100%; padding: 15px; border-radius: 12px; border: none; background: #ee4d2d; color: white; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); }
+        .btn-gerar:hover { background-color: #d73211; transform: scale(1.02); }
+        
+        .resultado { margin-top: 25px; padding: 20px; background-color: #1e1e1e; border-radius: 16px; border: 1px solid #333; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .link-text { color: #ee4d2d; font-weight: bold; word-break: break-all; display: block; margin-bottom: 15px; font-size: 15px; }
+        
+        .btn-acao { display: flex; gap: 10px; }
+        .btn-acao a, .btn-acao button { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; display: flex; align-items: center; justify-content: center; text-align: center; }
+        
+        .btn-abrir { background-color: #ee4d2d; color: white; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3); }
+        .btn-abrir:hover { background-color: #d73211; transform: scale(1.02); }
+        
+        .btn-copiar { background-color: #2a2a2a; color: #ccc; border: 1px solid #333; }
+        .btn-copiar:hover { background-color: #333; color: white; }
 
-        /* REDES SOCIAIS */
-        .social-area { margin-top: 30px; }
-        .btn-social { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 15px; text-decoration: none; font-weight: bold; margin-bottom: 10px; font-size: 14px; color: white; }
-        .btn-tg { background: #0088cc; }
-        .btn-wa { background: #25d366; }
+        /* SEÇÃO DE CANAIS ATUALIZADA */
+        .canais-section { margin-top: 40px; border-top: 1px solid #333; padding-top: 25px; padding-bottom: 20px; width: 100%; }
+        .canais-titulo { color: #888; font-size: 13px; margin-bottom: 15px; display: block; }
+        
+        .canais-botoes { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        
+        .btn-social { 
+            width: 100%;
+            max-width: 280px;
+            color: white !important; 
+            text-decoration: none; 
+            padding: 12px 20px; 
+            border-radius: 50px; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 12px; 
+            font-weight: bold; 
+            font-size: 14px; 
+            transition: 0.3s;
+        }
+        
+        .btn-tg { background-color: #0088cc; box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2); }
+        .btn-wa { background-color: #25d366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); }
+        .btn-social:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        
+        /* Estilo dos novos ícones */
+        .icon-social-img { width: 24px; height: 24px; border-radius: 50%; object-fit: contain; }
 
-        /* LINKS RECENTES (TODOS) */
-        .recent-container { margin-top: 40px; text-align: left; border-top: 1px solid #333; padding-top: 20px; }
-        .recent-title { color: #ff4d2d; font-size: 13px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; }
-        .recent-card { background: white; border-radius: 15px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: #333; }
-        .recent-img { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; background: #eee; }
-        .recent-info { flex: 1; }
-        .recent-info h4 { font-size: 12px; margin: 0 0 8px 0; color: #222; height: 32px; overflow: hidden; line-height: 1.3; }
-        .recent-buttons { display: flex; gap: 8px; }
-        .btn-card { flex: 1; padding: 7px; border-radius: 8px; font-size: 10px; font-weight: bold; text-align: center; text-decoration: none; }
-        .btn-open { background: #fce4ec; color: #d81b60; }
-        .btn-coupon { background: #f0f0f0; color: #666; }
+        /* AVISO DE COPIADO */
+        #avisoCopiado { visibility: hidden; min-width: 200px; background-color: #28a745; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 1; bottom: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        #avisoCopiado.show { visibility: visible; animation: fadeinout 2s; }
+        @keyframes fadeinout { 0%, 100% { opacity: 0; bottom: 0; } 20%, 80% { opacity: 1; bottom: 30px; } }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="/static/logo.png" class="logo">
-        <h2>Gerador da Sho</h2>
-        <p style="color:#888; font-size:13px;">Transforme produtos em ofertas exclusivas 🧡</p>
-        
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <h1>Gerador da Sho</h1>
+        <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
+
         <form method="POST">
-            <input type="text" name="link_usuario" placeholder="Cole o link do seu produto aqui..." required>
+            <input type="text" name="link_usuario" placeholder="Cole o link do seu produto da Shopee aqui..." required autocomplete="off">
             <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
 
         {% if link_novo %}
-        <div class="resultado-box">
-            <p style="color:#4caf50; font-size:12px; font-weight:bold; margin:0 0 10px 0;">✅ Link gerado com sucesso!</p>
-            <a href="{{ link_novo }}" target="_blank" class="link-texto" id="linkFinal">{{ link_novo }}</a>
-            <div class="botoes-acao">
-                <a href="{{ link_novo }}" target="_blank" class="btn-acao btn-shopee">ABRIR NA SHOPEE 🛍️</a>
-                <button onclick="copiarTexto()" class="btn-acao btn-copiar">COPIAR LINK</button>
+            <div class="resultado">
+                <span style="color: #888; font-size: 12px; display: block; margin-bottom: 8px;">✅ Link com desconto gerado com sucesso:</span>
+                <span class="link-text" id="meuLink">{{ link_novo }}</span>
+                
+                <div class="btn-acao">
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
+                    <button onclick="copiarLink()" class="btn-copiar">COPIAR LINK</button>
+                </div>
             </div>
-        </div>
         {% endif %}
 
-        <div class="social-area">
-            <a href="https://t.me/seugrupo" class="btn-social btn-tg"><i class="fab fa-telegram"></i> Grupo no Telegram</a>
-            <a href="https://wa.me/seugrupo" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
-        </div>
-
-        <div class="recent-container">
-            <h3 class="recent-title"><i class="fas fa-history"></i> ÚLTIMOS LINKS GERADOS</h3>
-            <div id="recent-list">
-                {% for item in historico %}
-                <div class="recent-card">
-                    <img src="{{ item.foto }}" class="recent-img" onerror="this.src='/static/logo.png'">
-                    <div class="recent-info">
-                        <h4>{{ item.titulo }}</h4>
-                        <div class="recent-buttons">
-                            <a href="{{ item.link }}" target="_blank" class="btn-card btn-open">Abrir produto</a>
-                            <a href="https://s.shopee.com.br/5L6Pa194W6" class="btn-card btn-coupon">Resgate mais cupons</a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
+        <div class="canais-section">
+            <span class="canais-titulo">Entre em nossos grupos de cupons grátis:</span>
+            <div class="canais-botoes">
+                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
+                    <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="Telegram">
+                    Grupo no Telegram
+                </a>
+                
+                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">
+                    <img src="{{ url_for('static', filename='whatsapp_icon.png') }}" class="icon-social-img" alt="WhatsApp">
+                    Grupo no WhatsApp
+                </a>
             </div>
         </div>
+
+        {% if erro %}
+            <p style="color: #ff4c4c; margin-top: 20px; font-size: 14px;">{{ erro }}</p>
+        {% endif %}
     </div>
 
+    <div id="avisoCopiado">Link copiado com sucesso! ✔️</div>
+
     <script>
-        function copiarTexto() {
-            const link = document.getElementById('linkFinal').innerText;
-            navigator.clipboard.writeText(link).then(() => alert("Link copiado!"));
+        function copiarLink() {
+            const texto = document.getElementById('meuLink').innerText;
+            const inputTemporario = document.createElement("textarea");
+            inputTemporario.value = texto;
+            document.body.appendChild(inputTemporario);
+            inputTemporario.select();
+            inputTemporario.setSelectionRange(0, 99999);
+            try {
+                document.execCommand("copy");
+                mostrarAviso();
+            } catch (err) { console.error('Erro ao copiar', err); }
+            document.body.removeChild(inputTemporario);
+        }
+
+        function mostrarAviso() {
+            const x = document.getElementById("avisoCopiado");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
         }
     </script>
 </body>
