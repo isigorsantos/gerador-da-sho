@@ -32,7 +32,7 @@
             font-family: -apple-system, sans-serif; 
             display: flex; flex-direction: column; align-items: center; 
             min-height: 100vh; margin: 0; transition: 0.5s;
-            overflow-x: hidden; /* LIBERADO: Agora você consegue rolar para os grupos */
+            overflow-x: hidden;
             padding-bottom: 50px;
         }
 
@@ -87,7 +87,7 @@
         
         .sucesso-titulo { 
             color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px;
-            animation: pulso-vitoria 1s ease-in-out infinite alternate; /* PULSO ATIVO */
+            animation: pulso-vitoria 1s ease-in-out infinite alternate;
         }
         @keyframes pulso-vitoria {
             0% { transform: scale(1); opacity: 1; text-shadow: 0 0 0px rgba(48, 209, 88, 0); }
@@ -95,11 +95,12 @@
         }
 
         .link-text { color: var(--marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
+        
+        /* --- BOTÕES DE AÇÃO COM NOVOS TEXTOS --- */
         .btn-acao { display: flex; gap: 12px; }
         .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: var(--texto-p); border: 1px solid rgba(255,255,255,0.1); }
         .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; color: white !important; }
 
-        /* --- GRUPOS SOCIAIS --- */
         .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; text-align: center; }
         .btn-social { 
             width: 90%; max-width: 280px; padding: 14px; border-radius: 50px; 
@@ -135,8 +136,8 @@
                 <span class="sucesso-titulo">✅ Link gerado com sucesso!</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
-                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR 🛍️</a>
-                    <button onclick="copiarLink()">COPIAR</button>
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
+                    <button onclick="copiarLink()">COPIAR LINK</button>
                 </div>
             </div>
         {% endif %}
