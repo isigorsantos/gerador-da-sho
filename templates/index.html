@@ -6,15 +6,13 @@
     <title>Gerador da Sho - Cupons da Sho</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        /* DESIGN ORIGINAL IGOR */
-        body { background-color: #121212; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; padding: 20px; margin: 0; }
+        /* DESIGN ORIGINAL IGOR - RECUPERADO */
+        body { background-color: #121212; color: white; font-family: sans-serif; text-align: center; padding: 20px; margin: 0; }
         .container { max-width: 450px; margin: auto; background: #1e1e1e; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .logo { width: 100px; border-radius: 20px; margin-bottom: 20px; }
-        h2 { margin-bottom: 5px; font-size: 22px; }
-        .sub { color: #888; font-size: 13px; margin-bottom: 25px; display: block; }
         
         input { width: 100%; padding: 15px; border-radius: 12px; border: 1px solid #333; margin: 10px 0; background: #2c2c2c; color: white; box-sizing: border-box; }
-        .btn-gerar { background: #ff4d2d; color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-gerar { background: #ff4d2d; color: white; padding: 15px; width: 100%; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 16px; margin-top: 10px; }
         
         /* BOX DE RESULTADO VERDE */
         .resultado-box { margin-top: 25px; background: #2c2c2c; padding: 20px; border-radius: 15px; border-left: 5px solid #4caf50; text-align: left; }
@@ -24,70 +22,75 @@
         .btn-shopee { background: #ff4d2d; }
         .btn-copiar { background: #3d3d3d; }
 
-        /* BOTÕES DE REDES SOCIAIS */
+        /* REDES SOCIAIS */
         .social-area { margin-top: 30px; }
         .btn-social { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border-radius: 15px; text-decoration: none; font-weight: bold; margin-bottom: 10px; font-size: 14px; color: white; }
         .btn-tg { background: #0088cc; }
         .btn-wa { background: #25d366; }
 
-        /* SEÇÃO DE RECENTES GLOBAL */
+        /* LINKS RECENTES (TODOS) */
         .recent-container { margin-top: 40px; text-align: left; border-top: 1px solid #333; padding-top: 20px; }
-        .recent-title { color: #ff4d2d; font-size: 13px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .recent-card { background: white; border-radius: 15px; padding: 10px; display: flex; align-items: center; gap: 12px; margin-bottom: 10px; color: #333; }
-        .recent-img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+        .recent-title { color: #ff4d2d; font-size: 13px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; }
+        .recent-card { background: white; border-radius: 15px; padding: 12px; display: flex; align-items: center; gap: 12px; margin-bottom: 12px; color: #333; }
+        .recent-img { width: 60px; height: 60px; border-radius: 10px; object-fit: cover; background: #eee; }
         .recent-info { flex: 1; }
-        .recent-info p { font-size: 12px; font-weight: bold; margin: 0 0 5px 0; }
-        .btn-card { display: inline-block; background: #fce4ec; color: #d81b60; padding: 5px 10px; border-radius: 5px; font-size: 10px; text-decoration: none; font-weight: bold; }
+        .recent-info h4 { font-size: 12px; margin: 0 0 8px 0; color: #222; height: 32px; overflow: hidden; line-height: 1.3; }
+        .recent-buttons { display: flex; gap: 8px; }
+        .btn-card { flex: 1; padding: 7px; border-radius: 8px; font-size: 10px; font-weight: bold; text-align: center; text-decoration: none; }
+        .btn-open { background: #fce4ec; color: #d81b60; }
+        .btn-coupon { background: #f0f0f0; color: #666; }
     </style>
 </head>
 <body>
     <div class="container">
         <img src="/static/logo.png" class="logo">
         <h2>Gerador da Sho</h2>
-        <span class="sub">Transforme qualquer produto em oferta Cupons da Sho 🧡</span>
+        <p style="color:#888; font-size:13px;">Transforme produtos em ofertas exclusivas 🧡</p>
         
         <form method="POST">
             <input type="text" name="link_usuario" placeholder="Cole o link do seu produto aqui..." required>
-            <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO <i class="fas fa-bolt"></i></button>
+            <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
 
         {% if link_novo %}
         <div class="resultado-box">
-            <p style="color:#4caf50; font-size:12px; margin-top:0;">✅ Link gerado com sucesso!</p>
+            <p style="color:#4caf50; font-size:12px; font-weight:bold; margin:0 0 10px 0;">✅ Link gerado com sucesso!</p>
             <a href="{{ link_novo }}" target="_blank" class="link-texto" id="linkFinal">{{ link_novo }}</a>
             <div class="botoes-acao">
-                <a href="{{ link_novo }}" target="_blank" class="btn-acao btn-shopee">ABRIR NA SHOPEE <i class="fas fa-shopping-bag"></i></a>
+                <a href="{{ link_novo }}" target="_blank" class="btn-acao btn-shopee">ABRIR NA SHOPEE 🛍️</a>
                 <button onclick="copiarTexto()" class="btn-acao btn-copiar">COPIAR LINK</button>
             </div>
         </div>
         {% endif %}
 
         <div class="social-area">
-            <p style="color: #666; font-size: 12px; margin-bottom: 15px;">Entre em nossos grupos de cupons:</p>
-            <a href="https://t.me/seugrupo" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram"></i> Grupo no Telegram</a>
-            <a href="https://wa.me/seugrupo" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
+            <a href="https://t.me/seugrupo" class="btn-social btn-tg"><i class="fab fa-telegram"></i> Grupo no Telegram</a>
+            <a href="https://wa.me/seugrupo" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
         </div>
 
         <div class="recent-container">
-            <span class="recent-title"><i class="fas fa-history"></i> ÚLTIMOS LINKS (TODOS OS USUÁRIOS)</span>
-            {% for item in historico %}
-            <div class="recent-card">
-                <img src="/static/logo.png" class="recent-img">
-                <div class="recent-info">
-                    <p>{{ item.titulo }}</p>
-                    <a href="{{ item.link }}" target="_blank" class="btn-card">Abrir produto</a>
+            <h3 class="recent-title"><i class="fas fa-history"></i> ÚLTIMOS LINKS GERADOS</h3>
+            <div id="recent-list">
+                {% for item in historico %}
+                <div class="recent-card">
+                    <img src="{{ item.foto }}" class="recent-img" onerror="this.src='/static/logo.png'">
+                    <div class="recent-info">
+                        <h4>{{ item.titulo }}</h4>
+                        <div class="recent-buttons">
+                            <a href="{{ item.link }}" target="_blank" class="btn-card btn-open">Abrir produto</a>
+                            <a href="https://s.shopee.com.br/5L6Pa194W6" class="btn-card btn-coupon">Resgate mais cupons</a>
+                        </div>
+                    </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
     </div>
 
     <script>
         function copiarTexto() {
             const link = document.getElementById('linkFinal').innerText;
-            navigator.clipboard.writeText(link).then(() => {
-                alert("Link copiado!");
-            });
+            navigator.clipboard.writeText(link).then(() => alert("Link copiado!"));
         }
     </script>
 </body>
