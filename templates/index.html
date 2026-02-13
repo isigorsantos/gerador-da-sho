@@ -83,6 +83,7 @@
             animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         
+        /* --- ANIMAÇÃO PULSANTE REATIVADA --- */
         .sucesso-titulo { 
             color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px;
             animation: pulso-vitoria 0.8s ease-out;
@@ -119,7 +120,7 @@
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
+        <p class="subtexto">Transforme links da Shopee em ofertas exclusivas 🧡</p>
         <form method="POST">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
             <button type="submit" class="btn-gerar">
