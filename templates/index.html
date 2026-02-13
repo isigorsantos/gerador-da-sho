@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador da Sho</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     
     <style>
-        /* --- VARIÁVEIS COM BRILHO INTENSO --- */
+        /* --- VARIÁVEIS COM CORES HARMONIZADAS --- */
         :root {
-            --bg-body: #050505; /* Fundo mais escuro para o brilho estourar */
-            --texto-principal: #ffffff;
-            --texto-secundario: rgba(255, 255, 255, 0.7);
+            --bg-body: #050505;
+            --texto-principal: #f5f5f7; /* Branco gelo suave para melhor leitura */
+            --texto-secundario: rgba(245, 245, 247, 0.6); /* Cinza sutil */
             --cor-marca: #ee4d2d;
-            /* Sombras internas que criam o efeito 3D líquido */
             --glass-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), inset 0 -5px 20px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.4);
             --glass-border: 1px solid rgba(255, 255, 255, 0.2);
             --bg-glass-base: rgba(255, 255, 255, 0.08);
@@ -22,7 +22,7 @@
 
         .light-mode {
             --bg-body: #eef2f6;
-            --texto-principal: #1c1c1e;
+            --texto-principal: #1c1c1e; /* Grafite escuro para contraste elegante */
             --texto-secundario: rgba(0, 0, 0, 0.6);
             --glass-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -5px 15px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.1);
             --glass-border: 1px solid rgba(255, 255, 255, 0.6);
@@ -32,12 +32,12 @@
         body { 
             background-color: var(--bg-body); 
             color: var(--texto-principal); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            /* APLICAÇÃO DA NOVA FONTE INTER */
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             min-height: 100vh; margin: 0; overflow: hidden; transition: 0.5s;
         }
 
-        /* BOLHAS DE COR MAIS FORTES NO FUNDO */
         .blob {
             position: absolute; width: 350px; height: 350px;
             background: radial-gradient(circle, rgba(238, 77, 45, 0.3) 0%, transparent 70%);
@@ -45,17 +45,13 @@
         }
         @keyframes move { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(40%, 40%) rotate(360deg); } }
 
-        /* --- CONTAINER LÍQUIDO SUPREMO --- */
         .container { 
             text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; 
-            border-radius: 45px; /* Curva bem acentuada */
-            
-            /* O segredo do brilho está aqui: múltiplas sombras internas */
+            border-radius: 45px; 
             background: var(--bg-glass-base);
             box-shadow: var(--glass-shadow);
             border: var(--glass-border);
-            
-            backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); /* Desfoque mais forte e cores vivas */
+            backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%);
             position: relative;
         }
         
@@ -63,37 +59,36 @@
 
         .logo { width: 110px; height: auto; margin-bottom: 15px; border-radius: 25%; box-shadow: 0 10px 25px rgba(238, 77, 45, 0.3); }
         
-        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; font-weight: 500; }
+        /* TIPOGRAFIA REFINADA */
+        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.8px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.5; padding: 0 10px; font-weight: 500; letter-spacing: -0.2px; }
         
-        /* Inputs CÁPSULA com brilho */
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
             background: rgba(255,255,255,0.03); color: var(--texto-principal); 
             border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: inset 0 2px 3px rgba(255,255,255,0.1); /* Brilho interno sutil */
+            box-shadow: inset 0 2px 3px rgba(255,255,255,0.1);
             box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s;
+            font-family: 'Inter', sans-serif; /* Garante a fonte no input */
         }
         .light-mode input { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); box-shadow: inset 0 2px 3px rgba(255,255,255,0.8); }
         input:focus { border-color: var(--cor-marca); background: rgba(238, 77, 45, 0.05); box-shadow: 0 0 0 3px rgba(238, 77, 45, 0.2), inset 0 2px 3px rgba(255,255,255,0.2); }
         
-        /* Botão Laranja LÍQUIDO */
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
-            /* Gradiente mais vivo e com reflexo superior */
             background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317);
             box-shadow: inset 0 2px 2px rgba(255,255,255,0.4), 0 15px 30px rgba(238, 77, 45, 0.4);
             color: white; font-weight: 800; cursor: pointer; font-size: 17px; position: relative; overflow: hidden; transition: 0.3s;
             text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+            font-family: 'Inter', sans-serif; /* Garante a fonte no botão */
         }
         .btn-gerar:active { transform: scale(0.98); box-shadow: inset 0 4px 5px rgba(0,0,0,0.2), 0 5px 15px rgba(238, 77, 45, 0.3); }
 
-        /* Resultado Glass */
         .resultado { 
             margin-top: 25px; padding: 25px; border-radius: 35px; 
             background: rgba(255,255,255,0.05); 
             box-shadow: var(--glass-shadow); border: var(--glass-border);
-            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efeito elástico */
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
         
@@ -107,6 +102,7 @@
             background: rgba(255,255,255,0.08); color: var(--texto-principal); 
             box-shadow: inset 0 1px 1px rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.1);
             transition: 0.3s;
+            font-family: 'Inter', sans-serif;
         }
         .light-mode .btn-copiar { background: rgba(255,255,255,0.7); box-shadow: inset 0 2px 4px rgba(255,255,255,1); border: 1px solid rgba(0,0,0,0.05); }
         .btn-abrir { 
@@ -115,7 +111,6 @@
             color: white !important; border: none !important;
         }
 
-        /* Canais Liquid Style */
         .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
         .btn-social { 
             width: 100%; max-width: 280px; padding: 14px; border-radius: 50px; 
@@ -123,13 +118,14 @@
             font-weight: 700; font-size: 15px; margin-bottom: 12px; transition: 0.3s; color: white !important; text-decoration: none;
             box-shadow: inset 0 2px 2px rgba(255,255,255,0.3), 0 10px 20px rgba(0,0,0,0.2);
             position: relative; overflow: hidden;
+            font-family: 'Inter', sans-serif;
         }
         .btn-tg { background: linear-gradient(145deg, #00a8ff, #0088cc); }
         .btn-wa { background: linear-gradient(145deg, #4cd964, #34c759); }
         .btn-social:hover { transform: translateY(-3px) scale(1.02); box-shadow: inset 0 2px 2px rgba(255,255,255,0.5), 0 15px 30px rgba(0,0,0,0.3); }
         .icon-social-img { width: 24px; height: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
-        #avisoCopiado { visibility: hidden; min-width: 160px; background: rgba(48, 209, 88, 0.8); backdrop-filter: blur(20px) saturate(150%); color: white; text-align: center; border-radius: 50px; padding: 12px; position: fixed; bottom: 40px; font-weight: 800; box-shadow: 0 10px 30px rgba(48, 209, 88, 0.4), inset 0 2px 2px rgba(255,255,255,0.4); z-index: 99; border: 1px solid rgba(255,255,255,0.2); }
+        #avisoCopiado { visibility: hidden; min-width: 160px; background: rgba(48, 209, 88, 0.8); backdrop-filter: blur(20px) saturate(150%); color: white; text-align: center; border-radius: 50px; padding: 12px; position: fixed; bottom: 40px; font-weight: 800; box-shadow: 0 10px 30px rgba(48, 209, 88, 0.4), inset 0 2px 2px rgba(255,255,255,0.4); z-index: 99; border: 1px solid rgba(255,255,255,0.2); font-family: 'Inter', sans-serif; }
         #avisoCopiado.show { visibility: visible; animation: fadeinout 2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         @keyframes fadeinout { 0%, 100% { opacity: 0; bottom: 20px; transform: scale(0.9); } 15%, 85% { opacity: 1; bottom: 40px; transform: scale(1); } }
     </style>
@@ -145,10 +141,10 @@
 
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">Transforme links da Shopee em ofertas exclusivas 🧡</p>
+        <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
 
         <form method="POST">
-            <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
+            <input type="text" name="link_usuario" placeholder="Cole o link do seu produto aqui..." required autocomplete="off">
             <button type="submit" class="btn-gerar">
                 {% if link_novo %} GERAR OUTRO DESCONTO ⚡ {% else %} GERAR LINK COM DESCONTO ⚡ {% endif %}
             </button>
@@ -156,31 +152,31 @@
 
         {% if link_novo %}
             <div class="resultado">
-                <span class="sucesso-titulo">✅ Link gerado com sucesso!</span>
+                <span class="sucesso-titulo">✅ Link com desconto gerado!</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
-                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR 🛍️</a>
-                    <button onclick="copiarLink()" class="btn-copiar">COPIAR</button>
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
+                    <button onclick="copiarLink()" class="btn-copiar">COPIAR LINK</button>
                 </div>
             </div>
         {% endif %}
 
         <div class="canais-section">
-            <span style="color: var(--texto-secundario); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Grupos de cupons grátis:</span>
+            <span style="color: var(--texto-secundario); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Entre em nossos grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
-                    <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="TG">
-                    Telegram
+                    <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="Telegram">
+                    Grupo no Telegram
                 </a>
                 <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">
-                    <img src="{{ url_for('static', filename='whatsapp_icon.png') }}" class="icon-social-img" alt="WA">
-                    WhatsApp
+                    <img src="{{ url_for('static', filename='whatsapp_icon.png') }}" class="icon-social-img" alt="WhatsApp">
+                    Grupo no WhatsApp
                 </a>
             </div>
         </div>
     </div>
 
-    <div id="avisoCopiado">Copiado! ✔️</div>
+    <div id="avisoCopiado">Link copiado com sucesso! ✔️</div>
 
     <script>
         function toggleTheme() {
