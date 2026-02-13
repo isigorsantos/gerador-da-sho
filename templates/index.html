@@ -30,22 +30,25 @@
         body { 
             background-color: var(--bg-body); color: var(--texto-p); 
             font-family: -apple-system, sans-serif; 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            min-height: 100vh; margin: 0; overflow: hidden; transition: 0.5s;
+            display: flex; flex-direction: column; align-items: center; 
+            min-height: 100vh; margin: 0; transition: 0.5s;
+            overflow-x: hidden; /* LIBERADO: Agora você consegue rolar para os grupos */
+            padding-bottom: 50px;
         }
 
         .blob {
             position: absolute; width: 350px; height: 350px;
-            background: radial-gradient(circle, rgba(238, 77, 45, 0.3) 0%, transparent 70%);
+            background: radial-gradient(circle, rgba(238, 77, 45, 0.2) 0%, transparent 70%);
             filter: blur(60px); border-radius: 50%; z-index: -1; animation: move 18s infinite alternate;
         }
-        @keyframes move { from { transform: translate(-50%, -50%); } to { transform: translate(40%, 40%); } }
+        @keyframes move { from { transform: translate(-30%, -30%); } to { transform: translate(30%, 30%); } }
 
         .container { 
             text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; 
             border-radius: 45px; background: var(--bg-glass); box-shadow: var(--glass-shadow);
             border: var(--glass-border); backdrop-filter: blur(30px) saturate(150%);
             -webkit-backdrop-filter: blur(30px) saturate(150%); position: relative;
+            margin-top: 50px;
         }
         
         .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-s); font-size: 22px; }
@@ -60,14 +63,13 @@
             box-sizing: border-box; font-size: 16px; outline: none;
         }
 
-        /* --- ANIMAÇÃO DO BOTÃO (BRILHO BRANCO PASSANDO) --- */
+        /* --- ANIMAÇÃO DO BRILHO NO BOTÃO --- */
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
             background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317);
             box-shadow: inset 0 2px 2px rgba(255,255,255,0.4), 0 15px 30px rgba(238, 77, 45, 0.4);
             color: white; font-weight: 800; cursor: pointer; font-size: 17px; position: relative; overflow: hidden;
         }
-        /* O efeito branco que passa pelo botão */
         .btn-gerar::after {
             content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
@@ -79,18 +81,17 @@
         .resultado { 
             margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); 
             box-shadow: var(--glass-shadow); border: var(--glass-border);
-            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: slideUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
         
         .sucesso-titulo { 
             color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px;
-            animation: pulso-vitoria 0.8s ease-out; /* Animação pulsante */
+            animation: pulso-vitoria 1s ease-in-out infinite alternate; /* PULSO ATIVO */
         }
         @keyframes pulso-vitoria {
-            0% { transform: scale(0.95); opacity: 0; }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 1; }
+            0% { transform: scale(1); opacity: 1; text-shadow: 0 0 0px rgba(48, 209, 88, 0); }
+            100% { transform: scale(1.05); opacity: 1; text-shadow: 0 0 15px rgba(48, 209, 88, 0.5); }
         }
 
         .link-text { color: var(--marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
@@ -98,10 +99,10 @@
         .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: var(--texto-p); border: 1px solid rgba(255,255,255,0.1); }
         .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; color: white !important; }
 
-        /* --- SEÇÃO SOCIAL COM TEXTO CORRIGIDO --- */
-        .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
+        /* --- GRUPOS SOCIAIS --- */
+        .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; max-width: 400px; text-align: center; }
         .btn-social { 
-            width: 100%; max-width: 280px; padding: 14px; border-radius: 50px; 
+            width: 90%; max-width: 280px; padding: 14px; border-radius: 50px; 
             display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
             font-weight: 700; font-size: 15px; margin-bottom: 12px; color: white !important; text-decoration: none;
             box-shadow: inset 0 2px 2px rgba(255,255,255,0.3), 0 10px 20px rgba(0,0,0,0.2);
@@ -109,20 +110,18 @@
         .btn-tg { background: linear-gradient(145deg, #00a8ff, #0088cc); }
         .btn-wa { background: linear-gradient(145deg, #4cd964, #34c759); }
 
-        #avisoCopiado { visibility: hidden; background: rgba(48, 209, 88, 0.8); color: white; border-radius: 50px; padding: 12px 30px; position: fixed; bottom: 40px; font-weight: 800; backdrop-filter: blur(10px); }
+        #avisoCopiado { visibility: hidden; background: rgba(48, 209, 88, 0.9); color: white; border-radius: 50px; padding: 12px 30px; position: fixed; bottom: 40px; font-weight: 800; z-index: 100; }
         #avisoCopiado.show { visibility: visible; animation: pop 2s; }
         @keyframes pop { 0%, 100% { opacity: 0; transform: scale(0.9); } 20%, 80% { opacity: 1; transform: scale(1); } }
     </style>
 </head>
 <body>
-    <div class="blob" style="top: -10%; left: -10%;"></div>
-    <div class="blob" style="bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(255, 180, 40, 0.3) 0%, transparent 70%);"></div>
-
+    <div class="blob" style="top: 10%; left: 10%;"></div>
     <div class="container">
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">Produtos exclusivos Cupons da Sho 🧡</p>
+        <p class="subtexto">Nossos grupos de cupons grátis 🧡</p>
 
         <form method="POST">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
@@ -143,7 +142,7 @@
         {% endif %}
 
         <div class="canais-section">
-            <span style="color: var(--texto-s); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Nossos grupos de cupons grátis:</span>
+            <span style="color: var(--texto-s); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Participe de nossos grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
                     <i class="fab fa-telegram-plane"></i> Grupo no Telegram
