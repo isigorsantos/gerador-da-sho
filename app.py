@@ -7,7 +7,7 @@ from urllib.parse import urlparse
 
 app = Flask(__name__)
 
-# --- CONFIGURAÇÕES ---
+# --- INTERRUPTOR DE MANUTENÇÃO (False = Site no Ar / True = Manutenção) ---
 MODO_MANUTENCAO = False 
 
 # --- SEUS DADOS DA API ---
@@ -43,12 +43,13 @@ def converter_shopee(url_original):
         dados = response.json()
         if "data" in dados and dados["data"] and dados["data"]["generateShortLink"]:
             return dados["data"]["generateShortLink"]["shortLink"]
-        return None
-    except:
-        return None
+        return "Erro na resposta da Shopee."
+    except Exception as e:
+        return f"Erro no sistema: {str(e)}"
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    # SE O MODO MANUTENÇÃO ESTIVER LIGADO, MOSTRA A PÁGINA DE AVISO
     if MODO_MANUTENCAO:
         return render_template('manutencao.html')
     
@@ -59,11 +60,9 @@ def index():
         if url_input:
             resultado = converter_shopee(url_input)
             if resultado and resultado.startswith("http"):
-                # LIMPEZA DO LINK: Remove o ?lp=aff e qualquer outro sufixo
-                link_final = resultado.split('?')[0]
+                link_final = resultado
             else:
-                erro = "Erro ao converter link. Tente outro!"
-                
+                erro = resultado
     return render_template('index.html', link_novo=link_final, erro=erro)
 
 if __name__ == '__main__':
