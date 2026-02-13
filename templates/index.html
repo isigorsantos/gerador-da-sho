@@ -3,134 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador da Sho</title>
+    <title>Gerador da Sho - Cupons da Sho</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-icons/6.0.0/css/all.min.css">
     <style>
-        body { background-color: #121212; color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .container { text-align: center; width: 90%; max-width: 400px; padding: 20px; }
-        .logo { width: 120px; height: auto; margin-bottom: 10px; border-radius: 20px; filter: drop-shadow(0 0 10px rgba(238, 77, 45, 0.3)); }
-        h1 { margin-bottom: 5px; font-weight: 800; font-size: 26px; }
-        .subtexto { color: #888; font-size: 14px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
+        /* Estilos do seu site laranja e preto aqui */
+        body { background-color: #121212; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: #1e1e1e; padding: 20px; border-radius: 20px; }
+        .logo { width: 100px; border-radius: 20px; margin-bottom: 15px; }
+        input { width: 90%; padding: 12px; border-radius: 10px; border: none; margin: 10px 0; background: #2c2c2c; color: white; }
+        .btn-gerar { background: #ff4d2d; color: white; padding: 12px; width: 95%; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
         
-        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #333; background-color: #1e1e1e; color: white; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s; }
-        input:focus { border-color: #ee4d2d; }
-        
-        .btn-gerar { width: 100%; padding: 15px; border-radius: 12px; border: none; background: #ee4d2d; color: white; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); }
-        .btn-gerar:hover { background-color: #d73211; transform: scale(1.02); }
-        
-        .resultado { margin-top: 25px; padding: 20px; background-color: #1e1e1e; border-radius: 16px; border: 1px solid #333; animation: fadeIn 0.5s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .link-text { color: #ee4d2d; font-weight: bold; word-break: break-all; display: block; margin-bottom: 15px; font-size: 15px; }
-        
-        .btn-acao { display: flex; gap: 10px; }
-        .btn-acao a, .btn-acao button { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; display: flex; align-items: center; justify-content: center; text-align: center; }
-        
-        .btn-abrir { background-color: #ee4d2d; color: white; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3); }
-        .btn-abrir:hover { background-color: #d73211; transform: scale(1.02); }
-        
-        .btn-copiar { background-color: #2a2a2a; color: #ccc; border: 1px solid #333; }
-        .btn-copiar:hover { background-color: #333; color: white; }
-
-        /* SEÇÃO DE CANAIS ATUALIZADA */
-        .canais-section { margin-top: 40px; border-top: 1px solid #333; padding-top: 25px; padding-bottom: 20px; width: 100%; }
-        .canais-titulo { color: #888; font-size: 13px; margin-bottom: 15px; display: block; }
-        
-        .canais-botoes { display: flex; flex-direction: column; gap: 12px; align-items: center; }
-        
-        .btn-social { 
-            width: 100%;
-            max-width: 280px;
-            color: white !important; 
-            text-decoration: none; 
-            padding: 12px 20px; 
-            border-radius: 50px; 
-            display: inline-flex; 
-            align-items: center; 
-            justify-content: center;
-            gap: 12px; 
-            font-weight: bold; 
-            font-size: 14px; 
-            transition: 0.3s;
+        /* Estilo dos Links Recentes igual ao seu print */
+        .recent-container { margin-top: 30px; text-align: left; }
+        .recent-title { color: #ff4d2d; font-size: 14px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; }
+        .recent-card { 
+            background: white; border-radius: 15px; padding: 12px; display: flex; align-items: center; gap: 12px; 
+            margin-bottom: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: #333;
         }
-        
-        .btn-tg { background-color: #0088cc; box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2); }
-        .btn-wa { background-color: #25d366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); }
-        .btn-social:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        
-        /* Estilo dos novos ícones */
-        .icon-social-img { width: 24px; height: 24px; border-radius: 50%; object-fit: contain; }
-
-        /* AVISO DE COPIADO */
-        #avisoCopiado { visibility: hidden; min-width: 200px; background-color: #28a745; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 1; bottom: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
-        #avisoCopiado.show { visibility: visible; animation: fadeinout 2s; }
-        @keyframes fadeinout { 0%, 100% { opacity: 0; bottom: 0; } 20%, 80% { opacity: 1; bottom: 30px; } }
+        .recent-img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; }
+        .recent-info { flex: 1; }
+        .recent-info h4 { font-size: 13px; margin: 0 0 8px 0; color: #444; height: 34px; overflow: hidden; }
+        .recent-buttons { display: flex; gap: 8px; }
+        .btn-card { flex: 1; padding: 8px; border-radius: 8px; font-size: 11px; font-weight: bold; text-align: center; text-decoration: none; }
+        .btn-open { background: #fce4ec; color: #d81b60; }
+        .btn-coupon { background: #f0f0f0; color: #666; }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
-        <h1>Gerador da Sho</h1>
-        <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
-
+        <img src="/static/logo.png" class="logo">
+        <h2>Gerador da Sho</h2>
         <form method="POST">
-            <input type="text" name="link_usuario" placeholder="Cole o link do seu produto da Shopee aqui..." required autocomplete="off">
+            <input type="text" name="link_usuario" placeholder="Cole o link do seu produto aqui..." required>
             <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
 
         {% if link_novo %}
-            <div class="resultado">
-                <span style="color: #888; font-size: 12px; display: block; margin-bottom: 8px;">✅ Link com desconto gerado com sucesso:</span>
-                <span class="link-text" id="meuLink">{{ link_novo }}</span>
-                
-                <div class="btn-acao">
-                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
-                    <button onclick="copiarLink()" class="btn-copiar">COPIAR LINK</button>
-                </div>
-            </div>
-        {% endif %}
-
-        <div class="canais-section">
-            <span class="canais-titulo">Entre em nossos grupos de cupons grátis:</span>
-            <div class="canais-botoes">
-                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
-                    <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="Telegram">
-                    Grupo no Telegram
-                </a>
-                
-                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">
-                    <img src="{{ url_for('static', filename='whatsapp_icon.png') }}" class="icon-social-img" alt="WhatsApp">
-                    Grupo no WhatsApp
-                </a>
-            </div>
+        <div style="margin-top:20px; background:#2c2c2c; padding:15px; border-radius:15px;">
+            <p style="color:#4caf50;">✅ Link gerado com sucesso!</p>
+            <a href="{{ link_novo }}" target="_blank" style="color:#ff4d2d; word-break:break-all;">{{ link_novo }}</a>
         </div>
-
-        {% if erro %}
-            <p style="color: #ff4c4c; margin-top: 20px; font-size: 14px;">{{ erro }}</p>
         {% endif %}
+
+        <div class="recent-container">
+            <h3 class="recent-title"><i class="fas fa-history"></i> LINKS GERADOS RECENTEMENTE</h3>
+            <div id="recent-list"></div>
+        </div>
     </div>
 
-    <div id="avisoCopiado">Link copiado com sucesso! ✔️</div>
-
     <script>
-        function copiarLink() {
-            const texto = document.getElementById('meuLink').innerText;
-            const inputTemporario = document.createElement("textarea");
-            inputTemporario.value = texto;
-            document.body.appendChild(inputTemporario);
-            inputTemporario.select();
-            inputTemporario.setSelectionRange(0, 99999);
-            try {
-                document.execCommand("copy");
-                mostrarAviso();
-            } catch (err) { console.error('Erro ao copiar', err); }
-            document.body.removeChild(inputTemporario);
+        const RECENT_KEY = 'shopee_history';
+
+        function saveHistory(link, title, img) {
+            let history = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+            // Evita duplicados e salva no início
+            history = history.filter(item => item.link !== link);
+            history.unshift({ link, title, img });
+            localStorage.setItem(RECENT_KEY, JSON.stringify(history.slice(0, 6)));
+            renderHistory();
         }
 
-        function mostrarAviso() {
-            const x = document.getElementById("avisoCopiado");
-            x.className = "show";
-            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+        function renderHistory() {
+            const list = document.getElementById('recent-list');
+            const history = JSON.parse(localStorage.getItem(RECENT_KEY) || "[]");
+            list.innerHTML = history.map(item => `
+                <div class="recent-card">
+                    <img src="${item.img}" class="recent-img">
+                    <div class="recent-info">
+                        <h4>${item.title}</h4>
+                        <div class="recent-buttons">
+                            <a href="${item.link}" target="_blank" class="btn-card btn-open">Abrir produto</a>
+                            <a href="https://s.shopee.com.br/5L6Pa194W6" class="btn-card btn-coupon">Resgate mais cupons</a>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
+
+        // Se o servidor enviou um novo link, salva no histórico do celular
+        {% if link_novo %}
+            saveHistory("{{ link_novo }}", "{{ titulo }}", "{{ foto }}");
+        {% else %}
+            renderHistory();
+        {% endif %}
     </script>
 </body>
 </html>
