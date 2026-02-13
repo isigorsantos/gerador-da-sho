@@ -8,113 +8,135 @@
     <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     
     <style>
+        /* --- VARIÁVEIS COM BRILHO INTENSO --- */
         :root {
-            --bg-body: #080808;
-            /* Vidro Ultra Transparente */
-            --bg-container: rgba(20, 20, 20, 0.3); 
-            --bg-input: rgba(255, 255, 255, 0.05);
+            --bg-body: #050505; /* Fundo mais escuro para o brilho estourar */
             --texto-principal: #ffffff;
-            --texto-secundario: rgba(255, 255, 255, 0.6);
-            --borda-vidro: 1px solid rgba(255, 255, 255, 0.15);
-            --sombra-glass: 0 15px 35px rgba(0, 0, 0, 0.5);
-            --blob-1: #ee4d2d;
-            --blob-2: #ff8c00;
+            --texto-secundario: rgba(255, 255, 255, 0.7);
+            --cor-marca: #ee4d2d;
+            /* Sombras internas que criam o efeito 3D líquido */
+            --glass-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), inset 0 -5px 20px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.4);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+            --bg-glass-base: rgba(255, 255, 255, 0.08);
         }
 
         .light-mode {
-            --bg-body: #fdfdfd;
-            --bg-container: rgba(255, 255, 255, 0.4);
-            --bg-input: rgba(0, 0, 0, 0.03);
-            --texto-principal: #1d1d1f;
-            --texto-secundario: rgba(0, 0, 0, 0.5);
-            --borda-vidro: 1px solid rgba(255, 255, 255, 0.8);
-            --sombra-glass: 0 15px 35px rgba(238, 77, 45, 0.1);
+            --bg-body: #eef2f6;
+            --texto-principal: #1c1c1e;
+            --texto-secundario: rgba(0, 0, 0, 0.6);
+            --glass-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -5px 15px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.1);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+            --bg-glass-base: rgba(255, 255, 255, 0.4);
         }
 
         body { 
-            background-color: var(--bg-body);
+            background-color: var(--bg-body); 
             color: var(--texto-principal); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; 
-            overflow: hidden; /* Para as bolhas de fundo não criarem barra de rolagem */
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            min-height: 100vh; margin: 0; overflow: hidden; transition: 0.5s;
+        }
+
+        /* BOLHAS DE COR MAIS FORTES NO FUNDO */
+        .blob {
+            position: absolute; width: 350px; height: 350px;
+            background: radial-gradient(circle, rgba(238, 77, 45, 0.3) 0%, transparent 70%);
+            filter: blur(60px); border-radius: 50%; z-index: -1; animation: move 18s infinite alternate; opacity: 0.7;
+        }
+        @keyframes move { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(40%, 40%) rotate(360deg); } }
+
+        /* --- CONTAINER LÍQUIDO SUPREMO --- */
+        .container { 
+            text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; 
+            border-radius: 45px; /* Curva bem acentuada */
+            
+            /* O segredo do brilho está aqui: múltiplas sombras internas */
+            background: var(--bg-glass-base);
+            box-shadow: var(--glass-shadow);
+            border: var(--glass-border);
+            
+            backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); /* Desfoque mais forte e cores vivas */
             position: relative;
         }
+        
+        .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; transition: 0.3s; z-index: 5; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
-        /* AS BOLHAS COLORIDAS DO IPHONE (LIQUID) */
-        .liquid-bg { position: absolute; width: 100%; height: 100%; z-index: -1; overflow: hidden; }
-        .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.4; animation: move 20s infinite alternate; }
-        .blob-1 { width: 400px; height: 400px; background: var(--blob-1); top: -100px; right: -100px; }
-        .blob-2 { width: 350px; height: 350px; background: var(--blob-2); bottom: -100px; left: -100px; animation-delay: -5s; }
+        .logo { width: 110px; height: auto; margin-bottom: 15px; border-radius: 25%; box-shadow: 0 10px 25px rgba(238, 77, 45, 0.3); }
         
-        @keyframes move {
-            from { transform: translate(0, 0); }
-            to { transform: translate(50px, 100px); }
-        }
-
-        /* CONTAINER LIQUID GLASS */
-        .container { 
-            text-align: center; width: 90%; max-width: 400px; padding: 25px; border-radius: 35px; position: relative; 
-            background: var(--bg-container);
-            /* O SEGREDO DO IPHONE: Blur alto + Saturação alta */
-            backdrop-filter: blur(30px) saturate(180%);
-            -webkit-backdrop-filter: blur(30px) saturate(180%);
-            border: var(--borda-vidro);
-            box-shadow: var(--sombra-glass);
-        }
+        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; font-weight: 500; }
         
-        .theme-toggle { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 20px; color: var(--texto-secundario); z-index: 10; }
-        .logo { width: 100px; margin-bottom: 10px; border-radius: 22px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        h1 { margin: 0 0 5px 0; font-weight: 800; font-size: 26px; letter-spacing: -0.5px; }
-        .subtexto { color: var(--texto-secundario); font-size: 14px; margin-bottom: 25px; line-height: 1.4; padding: 0 15px; }
-        
+        /* Inputs CÁPSULA com brilho */
         input { 
-            width: 100%; padding: 16px; margin-bottom: 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); 
-            background: var(--bg-input); color: var(--texto-principal); box-sizing: border-box; font-size: 16px; outline: none;
-            backdrop-filter: blur(5px);
+            width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
+            background: rgba(255,255,255,0.03); color: var(--texto-principal); 
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 2px 3px rgba(255,255,255,0.1); /* Brilho interno sutil */
+            box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s;
         }
+        .light-mode input { background: rgba(0,0,0,0.04); border-color: rgba(0,0,0,0.1); box-shadow: inset 0 2px 3px rgba(255,255,255,0.8); }
+        input:focus { border-color: var(--cor-marca); background: rgba(238, 77, 45, 0.05); box-shadow: 0 0 0 3px rgba(238, 77, 45, 0.2), inset 0 2px 3px rgba(255,255,255,0.2); }
         
+        /* Botão Laranja LÍQUIDO */
         .btn-gerar { 
-            width: 100%; padding: 16px; margin-bottom: 10px; border-radius: 16px; border: none; 
-            background: #ee4d2d; color: white; font-weight: 700; cursor: pointer; font-size: 16px; 
-            position: relative; overflow: hidden; box-shadow: 0 8px 20px rgba(238, 77, 45, 0.3);
+            width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
+            /* Gradiente mais vivo e com reflexo superior */
+            background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317);
+            box-shadow: inset 0 2px 2px rgba(255,255,255,0.4), 0 15px 30px rgba(238, 77, 45, 0.4);
+            color: white; font-weight: 800; cursor: pointer; font-size: 17px; position: relative; overflow: hidden; transition: 0.3s;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+        .btn-gerar:active { transform: scale(0.98); box-shadow: inset 0 4px 5px rgba(0,0,0,0.2), 0 5px 15px rgba(238, 77, 45, 0.3); }
+
+        /* Resultado Glass */
+        .resultado { 
+            margin-top: 25px; padding: 25px; border-radius: 35px; 
+            background: rgba(255,255,255,0.05); 
+            box-shadow: var(--glass-shadow); border: var(--glass-border);
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efeito elástico */
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        
+        .sucesso-titulo { color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px; text-shadow: 0 0 15px rgba(48, 209, 88, 0.4); }
+        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; text-shadow: 0 0 10px rgba(238, 77, 45, 0.3); }
+        
+        .btn-acao { display: flex; gap: 12px; }
+        .btn-acao a, .btn-acao button { 
+            flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; 
+            font-size: 14px; text-decoration: none; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.08); color: var(--texto-principal); 
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.1);
             transition: 0.3s;
         }
-        .btn-gerar:active { transform: scale(0.98); }
-        .btn-gerar::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: brilho-passando 3s infinite linear;
+        .light-mode .btn-copiar { background: rgba(255,255,255,0.7); box-shadow: inset 0 2px 4px rgba(255,255,255,1); border: 1px solid rgba(0,0,0,0.05); }
+        .btn-abrir { 
+            background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; 
+            box-shadow: inset 0 2px 2px rgba(255,255,255,0.4), 0 8px 15px rgba(238, 77, 45, 0.3) !important;
+            color: white !important; border: none !important;
         }
-        @keyframes brilho-passando { 0% { left: -100%; } 100% { left: 100%; } }
-        
-        .resultado { margin-top: 15px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); animation: slideUp 0.4s ease; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .sucesso-titulo { display: block; color: #28a745; font-size: 16px; font-weight: 800; margin-bottom: 12px; animation: pulse 1s infinite alternate; }
-        @keyframes pulse { from { opacity: 0.8; } to { opacity: 1; transform: scale(1.02); } }
 
-        .link-text { color: #ee4d2d; font-weight: 700; word-break: break-all; display: block; margin-bottom: 15px; }
-        .btn-acao { display: flex; gap: 10px; }
-        .btn-acao a, .btn-acao button { flex: 1; padding: 12px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; font-size: 13px; text-decoration: none; display: flex; align-items: center; justify-content: center; }
-        .btn-abrir { background: #ee4d2d; color: white; }
-        .btn-copiar { background: rgba(255,255,255,0.1); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1); }
+        /* Canais Liquid Style */
+        .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .btn-social { 
+            width: 100%; max-width: 280px; padding: 14px; border-radius: 50px; 
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
+            font-weight: 700; font-size: 15px; margin-bottom: 12px; transition: 0.3s; color: white !important; text-decoration: none;
+            box-shadow: inset 0 2px 2px rgba(255,255,255,0.3), 0 10px 20px rgba(0,0,0,0.2);
+            position: relative; overflow: hidden;
+        }
+        .btn-tg { background: linear-gradient(145deg, #00a8ff, #0088cc); }
+        .btn-wa { background: linear-gradient(145deg, #4cd964, #34c759); }
+        .btn-social:hover { transform: translateY(-3px) scale(1.02); box-shadow: inset 0 2px 2px rgba(255,255,255,0.5), 0 15px 30px rgba(0,0,0,0.3); }
+        .icon-social-img { width: 24px; height: 24px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2)); }
 
-        .canais-section { margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; width: 100%; }
-        .btn-social { width: 100%; max-width: 280px; color: white !important; text-decoration: none; padding: 12px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; font-size: 14px; margin-bottom: 10px; transition: 0.3s; }
-        .btn-tg { background: #0088cc; }
-        .btn-wa { background: #25d366; }
-        .icon-social-img { width: 20px; height: 20px; border-radius: 50%; }
-
-        #avisoCopiado { visibility: hidden; min-width: 180px; background: #28a745; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 99; bottom: 30px; font-weight: 700; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        #avisoCopiado.show { visibility: visible; animation: fadeInOut 2s; }
-        @keyframes fadeInOut { 0%, 100% { opacity: 0; bottom: 10px; } 20%, 80% { opacity: 1; bottom: 30px; } }
+        #avisoCopiado { visibility: hidden; min-width: 160px; background: rgba(48, 209, 88, 0.8); backdrop-filter: blur(20px) saturate(150%); color: white; text-align: center; border-radius: 50px; padding: 12px; position: fixed; bottom: 40px; font-weight: 800; box-shadow: 0 10px 30px rgba(48, 209, 88, 0.4), inset 0 2px 2px rgba(255,255,255,0.4); z-index: 99; border: 1px solid rgba(255,255,255,0.2); }
+        #avisoCopiado.show { visibility: visible; animation: fadeinout 2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes fadeinout { 0%, 100% { opacity: 0; bottom: 20px; transform: scale(0.9); } 15%, 85% { opacity: 1; bottom: 40px; transform: scale(1); } }
     </style>
 </head>
 <body>
-    <div class="liquid-bg">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-    </div>
+    <div class="blob" style="top: -10%; left: -10%;"></div>
+    <div class="blob" style="bottom: -10%; right: -10%; background: radial-gradient(circle, rgba(255, 180, 40, 0.3) 0%, transparent 70%); animation-delay: -5s;"></div>
 
     <div class="container">
         <div class="theme-toggle" onclick="toggleTheme()">
@@ -123,10 +145,10 @@
 
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
+        <p class="subtexto">Transforme links da Shopee em ofertas exclusivas 🧡</p>
 
         <form method="POST">
-            <input type="text" name="link_usuario" placeholder="Cole o link do seu produto aqui..." required autocomplete="off">
+            <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
             <button type="submit" class="btn-gerar">
                 {% if link_novo %} GERAR OUTRO DESCONTO ⚡ {% else %} GERAR LINK COM DESCONTO ⚡ {% endif %}
             </button>
@@ -134,31 +156,31 @@
 
         {% if link_novo %}
             <div class="resultado">
-                <span class="sucesso-titulo">✅ Link com desconto gerado!</span>
+                <span class="sucesso-titulo">✅ Link gerado com sucesso!</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
-                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
-                    <button onclick="copiarLink()" class="btn-copiar">COPIAR LINK</button>
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR 🛍️</a>
+                    <button onclick="copiarLink()" class="btn-copiar">COPIAR</button>
                 </div>
             </div>
         {% endif %}
 
         <div class="canais-section">
-            <span style="color: rgba(255,255,255,0.4); font-size: 12px; margin-bottom: 12px; display: block;">Entre em nossos grupos de cupons grátis:</span>
+            <span style="color: var(--texto-secundario); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
-                    <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="Telegram">
-                    Grupo no Telegram
+                    <img src="{{ url_for('static', filename='telegram_icon.png') }}" class="icon-social-img" alt="TG">
+                    Telegram
                 </a>
                 <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">
-                    <img src="{{ url_for('static', filename='whatsapp_icon.png') }}" class="icon-social-img" alt="WhatsApp">
-                    Grupo no WhatsApp
+                    <img src="{{ url_for('static', filename='whatsapp_icon.png') }}" class="icon-social-img" alt="WA">
+                    WhatsApp
                 </a>
             </div>
         </div>
     </div>
 
-    <div id="avisoCopiado">Link copiado! ✔️</div>
+    <div id="avisoCopiado">Copiado! ✔️</div>
 
     <script>
         function toggleTheme() {
