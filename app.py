@@ -6,17 +6,17 @@ import json
 
 app = Flask(__name__)
 
-# --- SEUS DADOS ---
+# SEUS DADOS OFICIAIS (O TOKEN QUE DEU CERTO)
 PARTNER_ID = "18322310004"
 PARTNER_KEY = "UIODYHCTHG2UZJLKOEP5ZINNEFRB3KHP"
 
 def converter_shopee(url_usuario):
     try:
-        # 1. Expandir o link curto
+        # 1. Expandir o link para a URL real do produto
         r = requests.get(url_usuario, allow_redirects=True, timeout=5)
         url_real = r.url
         
-        # 2. Gerar o link via API Oficial
+        # 2. Gerar o link de afiliado via API Oficial
         timestamp = int(time.time())
         url_api = "https://open-api.affiliate.shopee.com.br/graphql"
         payload = {"query": 'mutation { gerarLinkCurto(entrada: { urlOrigem: "%s" }) { linkCurto } }' % url_real}
@@ -40,7 +40,6 @@ def index():
         url = request.form.get('link_usuario', '').strip()
         if url:
             link_novo = converter_shopee(url)
-            
     return render_template('index.html', link_novo=link_novo)
 
 if __name__ == '__main__':
