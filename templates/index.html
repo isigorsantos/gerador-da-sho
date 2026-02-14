@@ -38,6 +38,11 @@
         .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; }
         .logo { width: 110px; border-radius: 25%; margin-bottom: 15px; }
         
+        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; }
+        
+        /* DESCRIÇÃO PRINCIPAL (ABAIXO DO NOME) */
+        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
+        
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
             background: rgba(255,255,255,0.2); color: var(--texto-principal); border: 2px solid rgba(255,255,255,0.3);
@@ -51,7 +56,6 @@
         }
 
         #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(0,0,0,0.1); border: var(--glass-border); }
-        .light-mode #loader { background: rgba(255,255,255,0.5); }
 
         .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: 3px solid var(--cor-sucesso); }
         .light-mode .resultado { background: #ffffff; }
@@ -65,7 +69,6 @@
         .btn-acao * { flex: 1; padding: 12px; border-radius: 50px; border: none; font-weight: 700; color: white; text-decoration: none; cursor: pointer; background: #333; font-size: 13px; display: flex; align-items: center; justify-content: center; }
         .btn-abrir { background: #ee4d2d !important; }
 
-        /* SEÇÃO SOCIAL COM A FRASE RESTAURADA */
         .canais-section { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--texto-secundario); }
         .frase-canais { color: var(--texto-secundario); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600; }
         
@@ -79,14 +82,15 @@
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">Transforme produtos em ofertas exclusivas 🧡</p>
+        
+        <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
         
         <form method="POST" onsubmit="mostrarLoading()">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required>
             <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
 
-        <div id="loader"><span style="font-weight: 700;">✨ Gerando seu link...</span></div>
+        <div id="loader"><span style="font-weight: 700;">✨ Gerando seu link com desconto...</span></div>
 
         {% if link_novo %}
             <div class="resultado">
