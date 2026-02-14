@@ -59,10 +59,10 @@ def index():
         if url_input:
             resultado = converter_shopee(url_input)
             if resultado and resultado.startswith("http"):
-                # LIMPEZA DO LINK: Remove o ?lp=aff
+                # LIMPEZA DO LINK: Mantida conforme solicitado
                 link_final = resultado.split('?')[0]
             else:
-                erro = "Erro ao converter link."
+                erro = "Erro ao converter link. Tente outro!"
                 
     return render_template('index.html', link_novo=link_final, erro=erro)
 
