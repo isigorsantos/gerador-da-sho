@@ -15,7 +15,7 @@
             --cor-marca: #ee4d2d;
             --glass-border: 1px solid rgba(255, 255, 255, 0.2);
             --bg-glass: rgba(255, 255, 255, 0.08);
-            --cor-sucesso: #30d158; /* Nova variável para o verde */
+            --cor-sucesso: #30d158;
         }
 
         .light-mode {
@@ -34,8 +34,7 @@
             background-attachment: fixed; background-size: cover;
         }
 
-        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass); backdrop-filter: blur(30px); border: var(--glass-border); position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
-        
+        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass); backdrop-filter: blur(30px); border: var(--glass-border); position: relative; }
         .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; }
         .logo { width: 110px; border-radius: 25%; margin-bottom: 15px; }
         
@@ -45,7 +44,6 @@
             font-weight: 700; font-size: 16px; outline: none; box-sizing: border-box;
         }
         .light-mode input { background: #ffffff; border: 2px solid #ee4d2d; color: #000000; }
-        input::placeholder { color: var(--texto-secundario); }
 
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
@@ -53,29 +51,20 @@
         }
 
         #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(0,0,0,0.1); border: var(--glass-border); }
-        .light-mode #loader { background: rgba(255,255,255,0.5); }
 
-        /* --- ÁREA DE RESULTADO VERDE --- */
-        .resultado { 
-            margin-top: 25px; padding: 25px; border-radius: 35px; 
-            background: rgba(255,255,255,0.05); 
-            border: 2px solid var(--cor-sucesso); /* Borda Verde */
-        }
+        /* --- ÁREA VERDE MANTIDA --- */
+        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: 2px solid var(--cor-sucesso); }
         .light-mode .resultado { background: #ffffff; }
 
         @keyframes vai-e-vem { 0%, 100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
-        
-        /* --- TÍTULO VERDE --- */
-        .sucesso-titulo { 
-            color: var(--cor-sucesso) !important; /* Texto Verde */
-            font-weight: 800; display: block; margin-bottom: 10px; animation: vai-e-vem 1.5s infinite ease-in-out; 
-        }
+        .sucesso-titulo { color: var(--cor-sucesso) !important; font-weight: 800; display: block; margin-bottom: 10px; animation: vai-e-vem 1.5s infinite ease-in-out; }
 
         .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; display: block; margin-bottom: 20px; }
         
+        /* --- BOTÕES COM TEXTO COMPLETO --- */
         .btn-acao { display: flex; gap: 10px; }
-        .btn-acao * { flex: 1; padding: 12px; border-radius: 50px; border: none; font-weight: 700; color: white; text-decoration: none; cursor: pointer; background: #333; }
-        .light-mode .btn-acao button { background: #888; }
+        .btn-acao * { flex: 1; padding: 12px; border-radius: 50px; border: none; font-weight: 700; color: white; text-decoration: none; cursor: pointer; background: #333; font-size: 13px; display: flex; align-items: center; justify-content: center; }
+        .light-mode .btn-acao button { background: #555; }
         .btn-abrir { background: #ee4d2d !important; }
 
         .canais-section { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--texto-secundario); }
@@ -84,13 +73,11 @@
         .btn-wa { background: #25d366; }
     </style>
 </head>
-<body class="dark-mode">
+<body>
     <div class="container">
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">Transforme produtos em ofertas exclusivas 🧡</p>
-        
         <form method="POST" onsubmit="mostrarLoading()">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required>
             <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
@@ -103,16 +90,16 @@
                 <span class="sucesso-titulo">✅ Link gerado com sucesso!</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
-                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR</a>
-                    <button onclick="copiarLink()">COPIAR</button>
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE</a>
+                    <button onclick="copiarLink()">COPIAR LINK</button>
                 </div>
             </div>
         {% endif %}
 
         <div class="canais-section">
             <div style="display: flex; flex-direction: column; align-items: center;">
-                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram-plane"></i> Telegram</a>
-                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">Telegram</a>
+                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">WhatsApp</a>
             </div>
         </div>
     </div>
@@ -121,20 +108,13 @@
         const html = document.documentElement;
         const icon = document.getElementById('theme-icon');
         if (localStorage.getItem('theme') === 'light') { html.classList.add('light-mode'); icon.classList.replace('fa-sun', 'fa-moon'); }
-
         function toggleTheme() {
             html.classList.toggle('light-mode');
             const isLight = html.classList.contains('light-mode');
             icon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun');
             localStorage.setItem('theme', isLight ? 'light' : 'dark');
         }
-
-        function mostrarLoading() {
-            const res = document.querySelector('.resultado');
-            if (res) res.style.display = 'none';
-            document.getElementById('loader').style.display = 'block';
-        }
-
+        function mostrarLoading() { const res = document.querySelector('.resultado'); if (res) res.style.display = 'none'; document.getElementById('loader').style.display = 'block'; }
         function copiarLink() {
             const texto = document.getElementById('meuLink').innerText;
             const input = document.createElement("textarea");
