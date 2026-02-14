@@ -1,9 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, session
+import os
 
 app = Flask(__name__)
+# Chave necessária para usar sessões (cookies)
+app.secret_key = os.urandom(24)
 
 # Contadores Reais (Iniciam em zero)
-# Nota: Na Vercel (plano grátis), esses números resetam se o site ficar inativo por muito tempo.
 stats = {
     'links': 0,
     'visitas': 0
@@ -11,16 +13,19 @@ stats = {
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # Aumenta 1 visita real APENAS quando a página é carregada ou atualizada
-    stats['visitas'] += 1
+    # LÓGICA DE VISITA REAL POR SESSÃO
+    # Só aumenta o contador se o usuário ainda não tiver o "carimbo" da sessão
+    if 'visitou' not in session:
+        stats['visitas'] += 1
+        session['visitou'] = True # Marca que ele já visitou
     
     link_novo = None
     if request.method == 'POST':
-        # Aumenta 1 link gerado APENAS quando o formulário é enviado
+        # Aumenta o link gerado real apenas no clique do botão
         stats['links'] += 1
         link_usuario = request.form.get('link_usuario')
         
-        # Sua lógica de conversão aqui
+        # Coloque sua lógica real de conversão de links aqui
         link_novo = "https://s.shopee.com.br/exemplo_real"
 
     return render_template('index.html', 
