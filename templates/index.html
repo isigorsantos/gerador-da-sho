@@ -3,77 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador da Sho - Oficial</title>
+    <title>Gerador da Sho</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     
     <style>
         :root {
-            --bg-body: radial-gradient(circle at center, #2a120a 0%, #050505 100%);
+            --bg-body: #050505;
             --texto-principal: #ffffff;
+            --texto-secundario: rgba(255, 255, 255, 0.7);
             --cor-marca: #ee4d2d;
+            --glass-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), inset 0 -5px 20px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.4);
             --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+            --bg-glass-base: rgba(255, 255, 255, 0.08);
+        }
+
+        .light-mode {
+            --bg-body: #eef2f6;
+            --texto-principal: #1c1c1e;
+            --texto-secundario: rgba(0, 0, 0, 0.6);
+            --glass-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -5px 15px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.1);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+            --bg-glass-base: rgba(255, 255, 255, 0.4);
         }
 
         body { 
-            background: var(--bg-body); color: var(--texto-principal); 
+            background-color: var(--bg-body); 
+            color: var(--texto-principal); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
-            min-height: 100vh; margin: 0; padding: 5vh 0; background-attachment: fixed; background-size: cover;
+            min-height: 100vh; margin: 0; padding: 5vh 0; transition: 0.5s; overflow-y: auto;
         }
 
-        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(30px); border: var(--glass-border); position: relative; }
+        .blob { position: fixed; width: 350px; height: 350px; background: radial-gradient(circle, rgba(238, 77, 45, 0.3) 0%, transparent 70%); filter: blur(60px); border-radius: 50%; z-index: -1; animation: move 18s infinite alternate; opacity: 0.7; }
+        @keyframes move { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(40%, 40%) rotate(360deg); } }
+
+        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass-base); box-shadow: var(--glass-shadow); border: var(--glass-border); backdrop-filter: blur(30px) saturate(150%); -webkit-backdrop-filter: blur(30px) saturate(150%); position: relative; }
+        
+        .logo { width: 110px; height: auto; margin-bottom: 15px; border-radius: 25%; }
+        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; }
+        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
         
         input { 
-            width: 100%; padding: 20px 25px; margin-bottom: 18px; border-radius: 50px; 
-            background: rgba(255,255,255,0.25); color: #ffffff; font-weight: 800; font-size: 17px;
-            border: 2px solid rgba(255, 255, 255, 0.4); outline: none; box-sizing: border-box;
+            width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
+            background: rgba(255,255,255,0.03); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 2px 3px rgba(255,255,255,0.1); box-sizing: border-box; font-size: 16px; outline: none;
         }
 
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
-            background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317); color: white; font-weight: 800; cursor: pointer;
+            background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317);
+            box-shadow: inset 0 2px 2px rgba(255,255,255,0.4), 0 15px 30px rgba(238, 77, 45, 0.4);
+            color: white; font-weight: 800; cursor: pointer; font-size: 17px; position: relative; overflow: hidden;
         }
 
-        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: var(--glass-border); animation: slideUp 0.5s ease; }
+        #loader {
+            display: none; margin-top: 15px; padding: 15px; border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1); border: var(--glass-border);
+            backdrop-filter: blur(10px); animation: fadeIn 0.3s ease;
+        }
+
+        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); box-shadow: var(--glass-shadow); border: var(--glass-border); animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .sucesso-titulo { color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px; }
+        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
         
-        /* ANIMAÇÃO DE VAI-E-VEM SOLICITADA */
-        @keyframes vai-e-vem {
-            0%, 100% { transform: translateX(-10px); }
-            50% { transform: translateX(10px); }
-        }
-
-        /* --- TÍTULO EM AZUL VIBRANTE --- */
-        .sucesso-titulo { 
-            color: #007bff !important; /* Azul Elétrico */
-            font-weight: 800; font-size: 19px; display: block; margin-bottom: 15px; 
-            animation: vai-e-vem 1.2s ease-in-out infinite;
-        }
-
-        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; display: block; margin-bottom: 20px; text-decoration: underline; }
         .btn-acao { display: flex; gap: 12px; }
-        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; text-decoration: none; color: white; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); }
-        .btn-abrir { background: #ee4d2d !important; }
-
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; color: white !important; }
     </style>
 </head>
 <body>
+    <div class="blob"></div>
     <div class="container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width: 110px; margin-bottom: 15px; border-radius: 25%;">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">O Gerador Oficial Cupons da Sho 🧡</p>
+        <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
         
-        <form method="POST">
-            <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required>
+        <form method="POST" onsubmit="mostrarLoading()">
+            <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
             <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
+
+        <div id="loader">
+            <span style="color: white; font-weight: 700;">✨ Gerando seu link com desconto...</span>
+        </div>
 
         {% if link_novo %}
             <div class="resultado">
                 <span class="sucesso-titulo">✅ Link gerado com sucesso!</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
-                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE</a>
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
                     <button onclick="copiarLink()">COPIAR LINK</button>
                 </div>
             </div>
@@ -81,6 +101,12 @@
     </div>
 
     <script>
+        function mostrarLoading() {
+            const res = document.querySelector('.resultado');
+            if (res) res.style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+        }
+
         function copiarLink() {
             const texto = document.getElementById('meuLink').innerText;
             const input = document.createElement("textarea");
