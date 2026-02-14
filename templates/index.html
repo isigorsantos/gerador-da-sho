@@ -36,6 +36,17 @@
 
         .container { text-align: center; width: 90%; max-width: 420px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass); backdrop-filter: blur(30px); border: var(--glass-border); position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
         .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; }
+        
+        /* --- BARRA DE ESTATÍSTICAS (NOVO) --- */
+        .stats-bar {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
+            font-size: 12px; font-weight: 700; color: var(--texto-secundario);
+            background: rgba(255, 255, 255, 0.05); padding: 8px 15px; border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; margin-left: auto; margin-right: auto;
+        }
+        .stats-bar i { color: var(--cor-marca); }
+        .stats-bar strong { color: var(--cor-sucesso); }
+
         .logo { width: 110px; border-radius: 25%; margin-bottom: 15px; }
         h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; }
         .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
@@ -48,7 +59,6 @@
         input:focus { border: 2px solid #ee4d2d; box-shadow: 0 0 15px rgba(238, 77, 45, 0.3); }
         .light-mode input { background: #ffffff; border: 2px solid #ee4d2d; color: #000000; }
 
-        /* --- BOTÃO COM ANIMAÇÃO DE BRILHO (SHIMMER) --- */
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
             background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317); color: white; font-weight: 800; 
@@ -56,24 +66,13 @@
         }
 
         .btn-gerar::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 20%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.4);
-            transform: rotate(30deg);
-            animation: brilho-passando 3s infinite;
+            content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%;
+            background: rgba(255, 255, 255, 0.4); transform: rotate(30deg); animation: brilho-passando 3s infinite;
         }
 
-        @keyframes brilho-passando {
-            0% { left: -60%; }
-            100% { left: 120%; }
-        }
+        @keyframes brilho-passando { 0% { left: -60%; } 100% { left: 120%; } }
 
-        #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: var(--glass-border); backdrop-filter: blur(10px); color: var(--texto-principal); }
-        .light-mode #loader { background: rgba(0, 0, 0, 0.05); }
+        #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: var(--glass-border); backdrop-filter: blur(10px); }
 
         .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: 3px solid var(--cor-sucesso); }
         .light-mode .resultado { background: #ffffff; }
@@ -98,6 +97,12 @@
 <body>
     <div class="container">
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
+
+        <div class="stats-bar">
+            <span><i class="fas fa-link"></i> Links: <strong>{{ links_contagem or '1.458' }}</strong></span>
+            <span><i class="fas fa-users"></i> Visitas: <strong>{{ visitas_contagem or '5.291' }}</strong></span>
+        </div>
+
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
         <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
@@ -125,8 +130,8 @@
         <div class="canais-section">
             <span class="frase-canais">Nossos grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
-                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram-plane"></i> Telegram</a>
-                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">Telegram</a>
+                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">WhatsApp</a>
             </div>
         </div>
     </div>
