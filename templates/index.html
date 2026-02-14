@@ -40,6 +40,7 @@
         @keyframes brilho-passando { 0% { left: -60%; } 100% { left: 120%; } }
         #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: var(--glass-border); backdrop-filter: blur(10px); color: var(--texto-principal); }
         .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: 3px solid var(--cor-sucesso); }
+        @keyframes vai-e-vem { 0%, 100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
         .sucesso-titulo { color: var(--cor-sucesso) !important; font-weight: 800; display: block; margin-bottom: 10px; animation: vai-e-vem 1.5s infinite ease-in-out; }
         .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; display: block; margin-bottom: 20px; }
         .btn-acao { display: flex; gap: 10px; }
@@ -50,7 +51,6 @@
         .btn-social { width: 100%; padding: 12px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; color: white !important; text-decoration: none; margin-bottom: 10px; }
         .btn-tg { background: linear-gradient(145deg, #00a8ff, #0088cc); }
         .btn-wa { background: linear-gradient(145deg, #4cd964, #34c759); }
-        @keyframes vai-e-vem { 0%, 100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
     </style>
 </head>
 <body>
@@ -80,8 +80,8 @@
         <div class="canais-section">
             <span class="frase-canais">Nossos grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
-                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram-plane"></i> Telegram</a>
-                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">Telegram</a>
+                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">WhatsApp</a>
             </div>
         </div>
     </div>
