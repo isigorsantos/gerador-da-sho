@@ -74,24 +74,24 @@
         #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: var(--glass-border); backdrop-filter: blur(10px); animation: fadeIn 0.3s ease; }
         .loader-text { color: var(--texto-principal); font-weight: 700; font-size: 15px; }
 
-        /* --- CORREÇÃO DEFINITIVA: RETÂNGULO VERDINHO VISÍVEL --- */
+        /* --- CORREÇÃO IGUAL AO SEU PRINT --- */
         .resultado { 
             margin-top: 25px; padding: 25px; border-radius: 35px; 
-            background: linear-gradient(135deg, rgba(48, 209, 88, 0.35), rgba(30, 150, 60, 0.2)) !important;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), 0 0 15px rgba(48, 209, 88, 0.2) !important;
-            border: 2px solid rgba(48, 209, 88, 0.5) !important;
+            background: rgba(15, 35, 20, 0.8) !important; /* Verde escuro igual ao print */
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(48, 209, 88, 0.1) !important;
+            border: 2px solid #30d158 !important; /* Borda verde neon do print */
             backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
             animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
         
-        .sucesso-titulo { color: #ffffff; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px; animation: pulso-vitoria 0.8s ease-out; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .sucesso-titulo { color: #30d158; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px; animation: pulso-vitoria 0.8s ease-out; }
         @keyframes pulso-vitoria { 0% { transform: scale(0.95); opacity: 0; } 50% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
         @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.9); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-        .link-text { color: #ffffff; font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; text-decoration: underline; }
+        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
         .btn-acao { display: flex; gap: 12px; }
-        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.15); color: #ffffff; border: 1px solid rgba(255,255,255,0.2); }
-        .btn-abrir { background: #ffffff !important; color: #1e963c !important; font-weight: 800 !important; }
+        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; color: white !important; }
 
         .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
         .btn-social { width: 100%; max-width: 280px; padding: 14px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; font-size: 15px; margin-bottom: 12px; transition: 0.3s; color: white !important; text-decoration: none; box-shadow: inset 0 2px 2px rgba(255,255,255,0.3), 0 10px 20px rgba(0,0,0,0.2); }
