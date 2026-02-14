@@ -9,7 +9,7 @@
     
     <style>
         :root {
-            /* --- ALTERAÇÃO AQUI: Fundo agora é um gradiente profundo --- */
+            /* Fundo Gradiente Profundo (Mantido) */
             --bg-body: radial-gradient(circle at center, #2a120a 0%, #050505 100%);
             --texto-principal: #ffffff;
             --texto-secundario: rgba(255, 255, 255, 0.7);
@@ -20,7 +20,7 @@
         }
 
         .light-mode {
-            /* --- ALTERAÇÃO AQUI: Fundo claro com tom alaranjado sutil --- */
+            /* Fundo Gradiente Claro (Mantido) */
             --bg-body: radial-gradient(circle at center, #fff0e6 0%, #eef2f6 100%);
             --texto-principal: #1c1c1e;
             --texto-secundario: rgba(0, 0, 0, 0.6);
@@ -30,15 +30,13 @@
         }
 
         body { 
-            /* Usamos 'background' em vez de 'background-color' para o gradiente */
             background: var(--bg-body); 
             color: var(--texto-principal); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
             min-height: 100vh; margin: 0; padding: 5vh 0; 
-            transition: background 0.5s ease; /* Transição suave do fundo */
+            transition: background 0.5s ease;
             overflow-y: auto;
-             /* Garante que o fundo cubra tudo e fique fixo */
             background-attachment: fixed;
             background-size: cover;
         }
@@ -53,12 +51,25 @@
         h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; }
         .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
         
+        /* --- INPUT COM MAIS DESTAQUE (Modo Escuro) --- */
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
-            background: rgba(255,255,255,0.03); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: inset 0 2px 3px rgba(255,255,255,0.1); box-sizing: border-box; font-size: 16px; outline: none;
+            /* Fundo mais opaco e borda mais forte */
+            background: rgba(255,255,255,0.08); 
+            color: var(--texto-principal); 
+            border: 1px solid rgba(255,255,255,0.25);
+            /* Sombra interna mais profunda */
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.2); 
+            box-sizing: border-box; font-size: 16px; outline: none;
         }
-        .light-mode input { background: rgba(0,0,0,0.05); border-color: rgba(0,0,0,0.15); box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); color: #1c1c1e; }
+        /* --- INPUT COM MAIS DESTAQUE (Modo Claro) --- */
+        .light-mode input { 
+            /* Fundo ligeiramente mais escuro para contraste */
+            background: rgba(0,0,0,0.08); 
+            border-color: rgba(0,0,0,0.25); 
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); 
+            color: #1c1c1e; 
+        }
 
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
