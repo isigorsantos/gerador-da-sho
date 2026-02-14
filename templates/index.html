@@ -46,31 +46,33 @@
         h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; letter-spacing: -0.5px; }
         .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
         
-        /* --- NOVO ESTILO DE INPUT COM DESTAQUE MÁXIMO --- */
+        /* --- INPUT COM FONTE MAIS CLARA E PESADA --- */
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
-            background: rgba(255,255,255,0.12); /* Mais visível no Dark */
-            color: var(--texto-principal); 
-            border: 2px solid rgba(255,255,255,0.25); /* Borda mais grossa */
-            /* Brilho externo sutil laranja para dar profundidade */
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.3), 0 0 15px rgba(238, 77, 45, 0.15); 
+            background: rgba(255,255,255,0.15); 
+            color: #ffffff; /* Texto branco puro no modo dark */
+            font-weight: 600; /* Fonte mais grossa */
+            border: 2px solid rgba(238, 77, 45, 0.4); /* Borda laranja sutil constante */
+            box-shadow: 0 0 10px rgba(238, 77, 45, 0.1), inset 0 2px 5px rgba(0,0,0,0.3); 
             box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s ease;
         }
 
+        /* Placeholder ultra visível */
+        input::placeholder { color: #ffffff; opacity: 0.9; font-weight: 600; }
+
         .light-mode input { 
-            background: rgba(255,255,255,0.8); /* Fundo quase sólido no Light para destacar */
-            border-color: rgba(0,0,0,0.15); 
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05), 0 5px 15px rgba(0,0,0,0.05); 
+            background: #ffffff; 
+            border-color: rgba(238, 77, 45, 0.3); 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); 
             color: #1c1c1e; 
         }
-
-        input::placeholder { color: var(--texto-secundario); opacity: 0.8; }
+        .light-mode input::placeholder { color: #1c1c1e; opacity: 0.6; }
 
         input:focus { 
             border-color: var(--cor-marca); 
-            background: rgba(238, 77, 45, 0.05); 
-            box-shadow: 0 0 20px rgba(238, 77, 45, 0.3), inset 0 2px 4px rgba(0,0,0,0.2); 
-            transform: scale(1.02); /* Pequeno efeito de zoom ao clicar */
+            background: rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 0 20px rgba(238, 77, 45, 0.4), inset 0 2px 4px rgba(0,0,0,0.2); 
+            transform: scale(1.01);
         }
         
         .btn-gerar { 
