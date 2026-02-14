@@ -2,8 +2,8 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Contadores Reais começando do ZERO
-# ATENÇÃO: Na Vercel (plano grátis), esses números resetam se o site ficar sem acesso por um tempo.
+# Contadores Reais (Iniciam em zero)
+# Nota: Na Vercel (plano grátis), esses números resetam se o site ficar inativo por muito tempo.
 stats = {
     'links': 0,
     'visitas': 0
@@ -11,16 +11,16 @@ stats = {
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # Toda vez que a página é acessada (GET ou POST), conta como 1 visita real
+    # Aumenta 1 visita real APENAS quando a página é carregada ou atualizada
     stats['visitas'] += 1
     
     link_novo = None
     if request.method == 'POST':
-        # Toda vez que o formulário é enviado, conta como 1 link gerado real
+        # Aumenta 1 link gerado APENAS quando o formulário é enviado
         stats['links'] += 1
         link_usuario = request.form.get('link_usuario')
         
-        # Aqui você deve manter sua lógica real de conversão de links
+        # Sua lógica de conversão aqui
         link_novo = "https://s.shopee.com.br/exemplo_real"
 
     return render_template('index.html', 
