@@ -18,14 +18,26 @@
             --bg-glass-base: rgba(255, 255, 255, 0.08);
         }
 
+        .light-mode {
+            --bg-body: radial-gradient(circle at center, #fff0e6 0%, #eef2f6 100%);
+            --texto-principal: #1c1c1e;
+            --texto-secundario: rgba(0, 0, 0, 0.6);
+            --glass-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.9), inset 0 -5px 15px rgba(0,0,0,0.05), 0 15px 35px rgba(0,0,0,0.1);
+            --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+            --bg-glass-base: rgba(255, 255, 255, 0.4);
+        }
+
         body { 
             background: var(--bg-body); color: var(--texto-principal); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
-            min-height: 100vh; margin: 0; padding: 5vh 0; background-attachment: fixed; background-size: cover;
+            min-height: 100vh; margin: 0; padding: 5vh 0; transition: background 0.5s ease;
+            overflow-y: auto; background-attachment: fixed; background-size: cover;
         }
 
         .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass-base); box-shadow: var(--glass-shadow); border: var(--glass-border); backdrop-filter: blur(30px); position: relative; }
+        
+        .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; z-index: 5; }
         .logo { width: 110px; height: auto; margin-bottom: 15px; border-radius: 25%; }
         h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; }
         .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; }
@@ -36,6 +48,7 @@
             border: 2px solid rgba(255, 255, 255, 0.4); outline: none; box-sizing: border-box;
         }
         input::placeholder { color: #ffffff !important; opacity: 1 !important; }
+        .light-mode input { background: #ffffff; border: 2px solid #ee4d2d; color: #000000; }
 
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
@@ -44,36 +57,49 @@
             color: white; font-weight: 800; cursor: pointer; font-size: 17px;
         }
 
-        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: var(--glass-border); }
+        #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: var(--glass-border); backdrop-filter: blur(10px); }
+        .loader-text { color: var(--texto-principal); font-weight: 700; font-size: 15px; }
+
+        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: var(--glass-border); animation: slideUp 0.5s ease; }
         
         @keyframes vai-e-vem { 0%, 100% { transform: translateX(-10px); } 50% { transform: translateX(10px); } }
-
-        .sucesso-titulo { 
-            color: #3399ff !important; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px; 
-            animation: vai-e-vem 1.2s ease-in-out infinite;
-        }
+        .sucesso-titulo { color: #3399ff !important; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px; animation: vai-e-vem 1.2s ease-in-out infinite; }
 
         .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
         .btn-acao { display: flex; gap: 12px; }
-        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1); }
-        .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; color: white !important; }
+        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; text-decoration: none; color: white; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.1); }
+        .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; }
 
         .canais-section { margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(255,255,255,0.1); }
         .btn-social { width: 100%; max-width: 280px; padding: 14px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font-weight: 700; margin-bottom: 12px; color: white !important; text-decoration: none; }
         .btn-tg { background: linear-gradient(145deg, #00a8ff, #0088cc); }
         .btn-wa { background: linear-gradient(145deg, #4cd964, #34c759); }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
+
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') { document.documentElement.classList.add('light-mode'); }
+        })();
+    </script>
 </head>
 <body>
     <div class="container">
+        <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
         <p class="subtexto">Transforme qualquer produto em uma oferta exclusiva Cupons da Sho 🧡</p>
         
-        <form method="POST">
+        <form method="POST" onsubmit="mostrarLoading()">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
             <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
+
+        <div id="loader">
+            <span class="loader-text">✨ Gerando seu link com desconto...</span>
+        </div>
 
         {% if link_novo %}
             <div class="resultado">
@@ -87,7 +113,7 @@
         {% endif %}
 
         <div class="canais-section">
-            <span style="color: rgba(255,255,255,0.6); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Nossos grupos de cupons grátis:</span>
+            <span style="color: var(--texto-secundario); font-size: 13px; margin-bottom: 15px; display: block; font-weight: 600;">Nossos grupos de cupons grátis:</span>
             <div style="display: flex; flex-direction: column; align-items: center;">
                 <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg"><i class="fab fa-telegram-plane"></i> Grupo no Telegram</a>
                 <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa"><i class="fab fa-whatsapp"></i> Grupo no WhatsApp</a>
@@ -96,6 +122,9 @@
     </div>
 
     <script>
+        if (document.documentElement.classList.contains('light-mode')) { document.getElementById('theme-icon').classList.replace('fa-sun', 'fa-moon'); }
+        function mostrarLoading() { const res = document.querySelector('.resultado'); if (res) res.style.display = 'none'; document.getElementById('loader').style.display = 'block'; }
+        function toggleTheme() { const html = document.documentElement; const icon = document.getElementById('theme-icon'); html.classList.toggle('light-mode'); if (html.classList.contains('light-mode')) { icon.classList.replace('fa-sun', 'fa-moon'); localStorage.setItem('theme', 'light'); } else { icon.classList.replace('fa-moon', 'fa-sun'); localStorage.setItem('theme', 'dark'); } }
         function copiarLink() {
             const texto = document.getElementById('meuLink').innerText;
             const input = document.createElement("textarea");
