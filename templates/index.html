@@ -37,13 +37,14 @@
         .container { text-align: center; width: 90%; max-width: 420px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass); backdrop-filter: blur(30px); border: var(--glass-border); position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
         .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; }
         
+        /* BARRA DE ESTATÍSTICAS SÓ COM LINKS */
         .stats-bar {
-            display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
-            font-size: 12px; font-weight: 700; color: var(--texto-secundario);
-            background: rgba(255, 255, 255, 0.05); padding: 8px 15px; border-radius: 50px;
+            display: flex; justify-content: center; margin-bottom: 25px;
+            font-size: 13px; font-weight: 700; color: var(--texto-secundario);
+            background: rgba(255, 255, 255, 0.05); padding: 10px 20px; border-radius: 50px;
             border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; margin: 0 auto 25px auto;
         }
-        .stats-bar i { color: var(--cor-marca); }
+        .stats-bar i { color: var(--cor-marca); margin-right: 8px; }
         .stats-bar strong { color: var(--cor-sucesso); }
 
         .logo { width: 110px; border-radius: 25%; margin-bottom: 15px; }
@@ -64,6 +65,7 @@
             cursor: pointer; font-size: 17px; position: relative; overflow: hidden;
         }
 
+        /* ANIMAÇÃO DE BRILHO MANTIDA */
         .btn-gerar::after {
             content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%;
             background: rgba(255, 255, 255, 0.4); transform: rotate(30deg); animation: brilho-passando 3s infinite;
@@ -98,8 +100,7 @@
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
 
         <div class="stats-bar">
-            <span><i class="fas fa-link"></i> Links: <strong>{{ links_contagem }}</strong></span>
-            <span><i class="fas fa-users"></i> Visitas: <strong>{{ visitas_contagem }}</strong></span>
+            <span><i class="fas fa-bolt"></i> Ofertas Geradas: <strong>{{ links_contagem }}</strong></span>
         </div>
 
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
@@ -109,7 +110,7 @@
         <form method="POST" onsubmit="mostrarLoading()">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
             <button type="submit" class="btn-gerar">
-                {% if link_novo %} GERAR NOVO LINK COM DESCONTO ⚡ {% else %} GERAR LINK COM DESCONTO ⚡ {% endif %}
+                {% if link_novo %} GERAR NOVA OFERTA ⚡ {% else %} GERAR LINK COM DESCONTO ⚡ {% endif %}
             </button>
         </form>
 
