@@ -2,25 +2,26 @@ from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
-# Contadores iniciais (Eles resetam se o servidor da Vercel dormir no plano free)
+# Contadores Reais começando do ZERO
+# ATENÇÃO: Na Vercel (plano grátis), esses números resetam se o site ficar sem acesso por um tempo.
 stats = {
-    'links': 1458,
-    'visitas': 5291
+    'links': 0,
+    'visitas': 0
 }
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    # Conta visita real ao carregar a página
+    # Toda vez que a página é acessada (GET ou POST), conta como 1 visita real
     stats['visitas'] += 1
     
     link_novo = None
     if request.method == 'POST':
-        # Conta link gerado ao clicar no botão
+        # Toda vez que o formulário é enviado, conta como 1 link gerado real
         stats['links'] += 1
         link_usuario = request.form.get('link_usuario')
         
-        # Simulação do link convertido (Aqui entra sua lógica real da Shopee)
-        link_novo = "https://s.shopee.com.br/exemplo"
+        # Aqui você deve manter sua lógica real de conversão de links
+        link_novo = "https://s.shopee.com.br/exemplo_real"
 
     return render_template('index.html', 
                            link_novo=link_novo, 
