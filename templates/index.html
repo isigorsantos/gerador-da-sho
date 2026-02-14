@@ -48,12 +48,32 @@
         input:focus { border: 2px solid #ee4d2d; box-shadow: 0 0 15px rgba(238, 77, 45, 0.3); }
         .light-mode input { background: #ffffff; border: 2px solid #ee4d2d; color: #000000; }
 
+        /* --- BOTÃO COM ANIMAÇÃO DE BRILHO (SHIMMER) --- */
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
-            background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317); color: white; font-weight: 800; cursor: pointer; font-size: 17px;
+            background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317); color: white; font-weight: 800; 
+            cursor: pointer; font-size: 17px; position: relative; overflow: hidden;
         }
 
-        #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(0,0,0,0.1); border: var(--glass-border); }
+        .btn-gerar::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: rotate(30deg);
+            animation: brilho-passando 3s infinite;
+        }
+
+        @keyframes brilho-passando {
+            0% { left: -60%; }
+            100% { left: 120%; }
+        }
+
+        #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: var(--glass-border); backdrop-filter: blur(10px); color: var(--texto-principal); }
+        .light-mode #loader { background: rgba(0, 0, 0, 0.05); }
 
         .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: 3px solid var(--cor-sucesso); }
         .light-mode .resultado { background: #ffffff; }
