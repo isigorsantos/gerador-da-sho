@@ -37,6 +37,7 @@
         .container { text-align: center; width: 90%; max-width: 420px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass); backdrop-filter: blur(30px); border: var(--glass-border); position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
         .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; }
         
+        /* Barra de Estatísticas Reais */
         .stats-bar {
             display: flex; justify-content: center; gap: 15px; margin-bottom: 25px;
             font-size: 12px; font-weight: 700; color: var(--texto-secundario);
@@ -98,8 +99,8 @@
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
 
         <div class="stats-bar">
-            <span><i class="fas fa-link"></i> Links: <strong id="count-links">{{ links_contagem }}</strong></span>
-            <span><i class="fas fa-users"></i> Visitas: <strong id="count-visitas">{{ visitas_contagem }}</strong></span>
+            <span><i class="fas fa-link"></i> Links Gerados: <strong>{{ links_contagem }}</strong></span>
+            <span><i class="fas fa-users"></i> Visitas: <strong>{{ visitas_contagem }}</strong></span>
         </div>
 
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
@@ -159,13 +160,6 @@
             input.value = texto; document.body.appendChild(input); input.select(); document.execCommand("copy"); document.body.removeChild(input);
             alert("Copiado!");
         }
-
-        // Simulação de visitas em tempo real
-        setInterval(function() {
-            let visitasElement = document.getElementById('count-visitas');
-            let atual = parseInt(visitasElement.innerText.replace('.', ''));
-            visitasElement.innerText = (atual + 1).toLocaleString('pt-BR');
-        }, Math.floor(Math.random() * 20000) + 10000);
     </script>
 </body>
 </html>
