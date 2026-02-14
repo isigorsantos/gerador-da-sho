@@ -74,12 +74,13 @@
         #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: var(--glass-border); backdrop-filter: blur(10px); animation: fadeIn 0.3s ease; }
         .loader-text { color: var(--texto-principal); font-weight: 700; font-size: 15px; }
 
-        /* --- AJUSTE: RETÂNGULO DE SUCESSO MEIO VERDINHO --- */
+        /* --- AJUSTE DEFINITIVO: RETÂNGULO VERDINHO --- */
         .resultado { 
             margin-top: 25px; padding: 25px; border-radius: 35px; 
-            background: rgba(48, 209, 88, 0.15); /* Fundo verde translúcido */
-            box-shadow: var(--glass-shadow); 
-            border: 1px solid rgba(48, 209, 88, 0.3); /* Borda verde suave */
+            background: rgba(48, 209, 88, 0.22) !important; /* Verde mais visível */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border: 1.5px solid rgba(48, 209, 88, 0.45) !important; /* Borda verde nítida */
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         }
         
