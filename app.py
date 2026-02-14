@@ -6,34 +6,49 @@ import requests
 
 app = Flask(__name__)
 
-# Suas Credenciais Reais Blindadas
+# Suas Credenciais Reais
 APP_ID = "18322310004"
 APP_SECRET = "UIODYHCTHG2UZJLKOEP5ZINNEFRB3KHP"
 API_URL = "https://open-api.affiliate.shopee.com.br/graphql"
 
+stats = {'links': 0}
+
 def converter_link_shopee(link_original):
     try:
         timestamp = int(time.time())
-        # Query GraphQL específica para a API da Shopee
-        query = 'mutation { generateShortLink(originUrl: "' + link_original + '") { shortLink } }'
-        body = json.dumps({"query": query})
         
-        # Gerando a Assinatura (Signature) obrigatória
+        # Estrutura exata da Mutation do ShortLink
+        query = """
+        mutation($originUrl: String!) {
+          generateShortLink(originUrl: $originUrl) {
+            shortLink
+          }
+        }
+        """
+        variables = {"originUrl": link_original}
+        body = json.dumps({"query": query, "variables": variables})
+        
+        # A assinatura deve ser exata: ID + Timestamp + Body + Secret
         payload = APP_ID + str(timestamp) + body + APP_SECRET
-        signature = hashlib.sha256(payload.encode()).hexdigest()
+        signature = hashlib.sha256(payload.encode('utf-8')).hexdigest()
 
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"SHA256 {APP_ID}:{timestamp}:{signature}"
         }
 
-        response = requests.post(API_URL, headers=headers, data=body, timeout=10)
+        response = requests.post(API_URL, headers=headers, data=body, timeout=15)
         res_json = response.json()
         
-        # Extrai o link curto do retorno da API
+        # Log de erro para você ver no console se falhar
+        if 'errors' in res_json:
+            print(f"Erro da Shopee: {res_json['errors']}")
+            return None
+            
         return res_json['data']['generateShortLink']['shortLink']
+        
     except Exception as e:
-        print(f"Erro na conversão: {e}")
+        print(f"Erro na requisição: {e}")
         return None
 
 @app.route('/', methods=['GET', 'POST'])
@@ -42,14 +57,17 @@ def index():
     if request.method == 'POST':
         link_usuario = request.form.get('link_usuario')
         if link_usuario:
-            # Chama a função real de conversão usando sua API
             resultado = converter_link_shopee(link_usuario)
             if resultado:
+                stats['links'] += 1
                 link_novo = resultado
             else:
-                link_novo = "Erro: Verifique se o link é um produto válido da Shopee."
+                # Esta mensagem aparece se a função retornar None
+                link_novo = "Erro ao converter link. Verifique a URL."
 
-    return render_template('index.html', link_novo=link_novo)
+    return render_template('index.html', 
+                           link_novo=link_novo, 
+                           links_contagem=stats['links'])
 
 if __name__ == '__main__':
     app.run(debug=True)
