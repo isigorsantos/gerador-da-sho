@@ -3,81 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerador da Sho 7.0</title>
+    <title>Gerador da Sho - Oficial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     
     <style>
         :root {
-            --bg-body: #050505;
+            --bg-body: radial-gradient(circle at center, #2a120a 0%, #050505 100%);
             --texto-principal: #ffffff;
             --cor-marca: #ee4d2d;
-            --glass-shadow: inset 0 2px 3px rgba(255, 255, 255, 0.3), inset 0 -5px 20px rgba(0,0,0,0.3), 0 20px 40px rgba(0,0,0,0.4);
             --glass-border: 1px solid rgba(255, 255, 255, 0.2);
-            --bg-glass-base: rgba(255, 255, 255, 0.08);
         }
 
         body { 
-            background-color: var(--bg-body); color: var(--texto-principal); 
+            background: var(--bg-body); color: var(--texto-principal); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
             display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
-            min-height: 100vh; margin: 0; padding: 5vh 0; overflow-y: auto;
+            min-height: 100vh; margin: 0; padding: 5vh 0; background-attachment: fixed; background-size: cover;
         }
 
-        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass-base); box-shadow: var(--glass-shadow); border: var(--glass-border); backdrop-filter: blur(30px) saturate(150%); position: relative; }
-        .logo { width: 110px; height: auto; margin-bottom: 15px; border-radius: 25%; }
+        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(30px); border: var(--glass-border); position: relative; }
         
-        /* CAMPO DE LINK: FONTE BRANCA E NEGRITO (BLINDADO) */
         input { 
             width: 100%; padding: 20px 25px; margin-bottom: 18px; border-radius: 50px; 
             background: rgba(255,255,255,0.25); color: #ffffff; font-weight: 800; font-size: 17px;
             border: 2px solid rgba(255, 255, 255, 0.4); outline: none; box-sizing: border-box;
         }
-        input::placeholder { color: #ffffff !important; opacity: 1 !important; }
 
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
             background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317); color: white; font-weight: 800; cursor: pointer;
         }
 
-        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); box-shadow: var(--glass-shadow); border: var(--glass-border); animation: slideUp 0.5s ease; }
+        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: var(--glass-border); animation: slideUp 0.5s ease; }
         
         /* ANIMAÇÃO DE VAI-E-VEM SOLICITADA */
         @keyframes vai-e-vem {
-            0%, 100% { transform: translateX(-8px); }
-            50% { transform: translateX(8px); }
+            0%, 100% { transform: translateX(-10px); }
+            50% { transform: translateX(10px); }
         }
 
-        /* --- TÍTULO AZUL COM ANIMAÇÃO --- */
+        /* --- TÍTULO EM AZUL VIBRANTE --- */
         .sucesso-titulo { 
-            color: #3399ff !important; 
-            font-weight: 800; 
-            font-size: 18px; 
-            display: block; 
-            margin-bottom: 15px; 
-            animation: vai-e-vem 1.5s ease-in-out infinite;
+            color: #007bff !important; /* Azul Elétrico */
+            font-weight: 800; font-size: 19px; display: block; margin-bottom: 15px; 
+            animation: vai-e-vem 1.2s ease-in-out infinite;
         }
 
-        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
+        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; display: block; margin-bottom: 20px; text-decoration: underline; }
         .btn-acao { display: flex; gap: 12px; }
-        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; font-size: 14px; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.08); color: var(--texto-principal); border: 1px solid rgba(255,255,255,0.1); }
-        .btn-abrir { background: linear-gradient(145deg, #ff7a59, #ee4d2d) !important; color: white !important; }
+        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 700; cursor: pointer; text-decoration: none; color: white; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); }
+        .btn-abrir { background: #ee4d2d !important; }
 
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width: 110px; margin-bottom: 15px; border-radius: 25%;">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">VERSÃO 7.0 - Transforme links em ofertas 🧡</p>
+        <p class="subtexto">O Gerador Oficial Cupons da Sho 🧡</p>
         
-        <form method="POST" onsubmit="mostrarLoading()">
-            <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
+        <form method="POST">
+            <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required>
             <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
-
-        <div id="loader" style="display:none; margin-top:15px;"><span style="color: white; font-weight: 700;">✨ Gerando...</span></div>
 
         {% if link_novo %}
             <div class="resultado">
@@ -92,7 +81,6 @@
     </div>
 
     <script>
-        function mostrarLoading() { const res = document.querySelector('.resultado'); if (res) res.style.display = 'none'; document.getElementById('loader').style.display = 'block'; }
         function copiarLink() {
             const texto = document.getElementById('meuLink').innerText;
             const input = document.createElement("textarea");
