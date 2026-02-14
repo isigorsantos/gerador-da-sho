@@ -40,20 +40,13 @@
         h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; }
         .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
         
-        /* --- CAMPO DE LINK DESTACADO (FIX) --- */
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
             background: rgba(255,255,255,0.1); color: #ffffff; font-weight: 800; font-size: 16px;
-            /* Borda laranja para destacar no modo escuro */
-            border: 2px solid rgba(238, 77, 45, 0.5); 
-            outline: none; box-sizing: border-box; transition: 0.3s;
+            border: 2px solid rgba(238, 77, 45, 0.5); outline: none; box-sizing: border-box; transition: 0.3s;
         }
         input:focus { border: 2px solid #ee4d2d; box-shadow: 0 0 15px rgba(238, 77, 45, 0.3); }
-        input::placeholder { color: rgba(255,255,255,0.5); }
-
-        /* Estilo do Input no Modo Claro */
         .light-mode input { background: #ffffff; border: 2px solid #ee4d2d; color: #000000; }
-        .light-mode input::placeholder { color: rgba(0,0,0,0.4); }
 
         .btn-gerar { 
             width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; 
@@ -87,12 +80,13 @@
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        
         <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
         
         <form method="POST" onsubmit="mostrarLoading()">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
-            <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
+            <button type="submit" class="btn-gerar">
+                {% if link_novo %} GERAR NOVO LINK COM DESCONTO ⚡ {% else %} GERAR LINK COM DESCONTO ⚡ {% endif %}
+            </button>
         </form>
 
         <div id="loader"><span style="font-weight: 700;">✨ Gerando seu link com desconto...</span></div>
