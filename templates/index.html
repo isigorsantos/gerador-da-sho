@@ -11,17 +11,21 @@
         :root {
             --bg-body: radial-gradient(circle at center, #2a120a 0%, #050505 100%);
             --texto-principal: #ffffff;
+            --cor-marca: #ee4d2d;
         }
 
         body { 
             background: var(--bg-body); color: var(--texto-principal); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            display: flex; flex-direction: column; align-items: center; min-height: 100vh; margin: 0; padding: 5vh 0;
-            background-attachment: fixed; background-size: cover;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
+            min-height: 100vh; margin: 0; padding: 5vh 0; transition: background 0.5s ease;
+            overflow-y: auto; background-attachment: fixed; background-size: cover;
         }
 
-        .container { text-align: center; width: 90%; max-width: 400px; padding: 30px 25px; border-radius: 45px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); position: relative; }
+        .container { text-align: center; width: 95%; max-width: 420px; padding: 35px 25px; border-radius: 45px; background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(30px); border: 1px solid rgba(255, 255, 255, 0.2); position: relative; }
+        .logo { width: 110px; height: auto; margin-bottom: 15px; border-radius: 25%; }
         
+        /* CAMPO DE LINK: FONTE BRANCA E NEGRITO */
         input { 
             width: 100%; padding: 20px 25px; margin-bottom: 18px; border-radius: 50px; 
             background: rgba(255,255,255,0.25); color: #ffffff; font-weight: 800; font-size: 17px;
@@ -34,41 +38,40 @@
             background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317); color: white; font-weight: 800; cursor: pointer;
         }
 
+        /* RETÂNGULO VERDE IGUAL AO PRINT */
         .resultado { 
             margin-top: 25px; padding: 25px; border-radius: 35px; 
             background: rgba(10, 40, 20, 0.95) !important; 
             border: 3px solid #30d158 !important; 
-            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 15px 45px rgba(0, 0, 0, 0.7), 0 0 20px rgba(48, 209, 88, 0.3) !important;
+            animation: slideUp 0.5s ease;
         }
         
-        /* --- ANIMAÇÃO DE VAI E VEM (HORIZONTAL) --- */
+        /* ANIMAÇÃO DE VAI E VEM */
         .sucesso-titulo { 
-            color: #30d158 !important; 
-            font-weight: 800; 
-            font-size: 18px; 
-            display: block; 
-            margin-bottom: 15px;
-            animation: vai-e-vem 1.5s ease-in-out infinite; /* Balanço horizontal */
+            color: #30d158 !important; font-weight: 800; font-size: 18px; display: block; margin-bottom: 15px; 
+            animation: vai-e-vem 2s ease-in-out infinite;
         }
 
         @keyframes vai-e-vem {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-8px); }
-            75% { transform: translateX(8px); }
+            0%, 100% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
         }
 
         .link-text { color: #ff7a59 !important; font-weight: 700; word-break: break-all; display: block; margin-bottom: 20px; text-decoration: underline; }
+        
         .btn-acao { display: flex; gap: 12px; }
-        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 800; color: white; cursor: pointer; text-decoration: none; }
+        .btn-acao * { flex: 1; padding: 14px; border-radius: 50px; border: none; font-weight: 800; color: white; cursor: pointer; text-decoration: none; display: flex; align-items: center; justify-content: center; background: rgba(255,255,255,0.1); }
         .btn-abrir { background: #ee4d2d !important; }
-        .btn-copiar { background: #333333 !important; }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
     <div class="container">
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" style="width: 110px; margin-bottom: 15px; border-radius: 25%;">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
-        <p class="subtexto">VERSÃO 3.0 - Gerador Oficial Cupons da Sho 🧡</p>
+        <p class="subtexto">VERSÃO FINAL 5.0 - Gerador Cupons da Sho 🧡</p>
         
         <form method="POST">
             <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required>
@@ -83,11 +86,12 @@
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 <div class="btn-acao">
                     <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE</a>
-                    <button class="btn-copiar" onclick="copiarLink()">COPIAR LINK</button>
+                    <button style="background: #333;" onclick="copiarLink()">COPIAR LINK</button>
                 </div>
             </div>
         {% endif %}
     </div>
+
     <script>
         function copiarLink() {
             const texto = document.getElementById('meuLink').innerText;
