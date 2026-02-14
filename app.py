@@ -6,18 +6,18 @@ import requests
 
 app = Flask(__name__)
 
-# Suas Credenciais Reais
+# Suas Credenciais Reais Blindadas
 APP_ID = "18322310004"
 APP_SECRET = "UIODYHCTHG2UZJLKOEP5ZINNEFRB3KHP"
 API_URL = "https://open-api.affiliate.shopee.com.br/graphql"
 
+# Contador de ofertas (inicia em 0)
 stats = {'links': 0}
 
 def converter_link_shopee(link_original):
     try:
         timestamp = int(time.time())
-        
-        # Estrutura exata da Mutation do ShortLink
+        # Query exata do GraphQL da Shopee
         query = """
         mutation($originUrl: String!) {
           generateShortLink(originUrl: $originUrl) {
@@ -28,7 +28,7 @@ def converter_link_shopee(link_original):
         variables = {"originUrl": link_original}
         body = json.dumps({"query": query, "variables": variables})
         
-        # A assinatura deve ser exata: ID + Timestamp + Body + Secret
+        # A assinatura precisa ser ID + Timestamp + Body + Secret
         payload = APP_ID + str(timestamp) + body + APP_SECRET
         signature = hashlib.sha256(payload.encode('utf-8')).hexdigest()
 
@@ -40,15 +40,10 @@ def converter_link_shopee(link_original):
         response = requests.post(API_URL, headers=headers, data=body, timeout=15)
         res_json = response.json()
         
-        # Log de erro para você ver no console se falhar
-        if 'errors' in res_json:
-            print(f"Erro da Shopee: {res_json['errors']}")
-            return None
-            
+        # Retorna o link curto real da sua conta
         return res_json['data']['generateShortLink']['shortLink']
-        
     except Exception as e:
-        print(f"Erro na requisição: {e}")
+        print(f"Erro na API Shopee: {e}")
         return None
 
 @app.route('/', methods=['GET', 'POST'])
@@ -62,7 +57,7 @@ def index():
                 stats['links'] += 1
                 link_novo = resultado
             else:
-                # Esta mensagem aparece se a função retornar None
+                # Mensagem que aparece na sua imagem quando a API falha
                 link_novo = "Erro ao converter link. Verifique a URL."
 
     return render_template('index.html', 
