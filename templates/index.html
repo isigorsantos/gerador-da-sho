@@ -15,6 +15,7 @@
             --cor-marca: #ee4d2d;
             --glass-border: 1px solid rgba(255, 255, 255, 0.2);
             --bg-glass: rgba(255, 255, 255, 0.08);
+            --cor-sucesso: #30d158; /* Nova variável para o verde */
         }
 
         .light-mode {
@@ -38,7 +39,6 @@
         .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; }
         .logo { width: 110px; border-radius: 25%; margin-bottom: 15px; }
         
-        /* CORREÇÃO DO INPUT NO MODO CLARO */
         input { 
             width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
             background: rgba(255,255,255,0.2); color: var(--texto-principal); border: 2px solid rgba(255,255,255,0.3);
@@ -52,15 +52,24 @@
             background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317); color: white; font-weight: 800; cursor: pointer;
         }
 
-        /* ANIMAÇÃO GERANDO */
         #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(0,0,0,0.1); border: var(--glass-border); }
         .light-mode #loader { background: rgba(255,255,255,0.5); }
 
-        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: var(--glass-border); }
+        /* --- ÁREA DE RESULTADO VERDE --- */
+        .resultado { 
+            margin-top: 25px; padding: 25px; border-radius: 35px; 
+            background: rgba(255,255,255,0.05); 
+            border: 2px solid var(--cor-sucesso); /* Borda Verde */
+        }
         .light-mode .resultado { background: #ffffff; }
 
         @keyframes vai-e-vem { 0%, 100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
-        .sucesso-titulo { color: #007bff !important; font-weight: 800; display: block; margin-bottom: 10px; animation: vai-e-vem 1.5s infinite ease-in-out; }
+        
+        /* --- TÍTULO VERDE --- */
+        .sucesso-titulo { 
+            color: var(--cor-sucesso) !important; /* Texto Verde */
+            font-weight: 800; display: block; margin-bottom: 10px; animation: vai-e-vem 1.5s infinite ease-in-out; 
+        }
 
         .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; display: block; margin-bottom: 20px; }
         
@@ -75,7 +84,8 @@
         .btn-wa { background: #25d366; }
     </style>
 </head>
-<body class="dark-mode"> <div class="container">
+<body class="dark-mode">
+    <div class="container">
         <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
@@ -108,7 +118,6 @@
     </div>
 
     <script>
-        // Tema
         const html = document.documentElement;
         const icon = document.getElementById('theme-icon');
         if (localStorage.getItem('theme') === 'light') { html.classList.add('light-mode'); icon.classList.replace('fa-sun', 'fa-moon'); }
