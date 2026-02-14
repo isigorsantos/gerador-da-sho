@@ -65,21 +65,21 @@
 
         .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); box-shadow: var(--glass-shadow); border: var(--glass-border); animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
         
-        /* --- NOVA ANIMAÇÃO: Balanço Suave --- */
+        /* Animação de Balanço Suave */
         @keyframes balanco-suave {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-4px); }
             75% { transform: translateX(4px); }
         }
 
-        /* Aplicação da animação no título de sucesso */
+        /* --- MUDANÇA DE COR AQUI --- */
         .sucesso-titulo { 
-            color: #30d158; 
+            color: #3399ff; /* Azul vibrante */
             font-weight: 800; 
             font-size: 18px; 
             display: block; 
             margin-bottom: 15px; 
-            animation: balanco-suave 2s ease-in-out infinite; /* Animação contínua */
+            animation: balanco-suave 2s ease-in-out infinite; /* Animação mantida */
         }
 
         .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; font-size: 15px; display: block; margin-bottom: 20px; }
