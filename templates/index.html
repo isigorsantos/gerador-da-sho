@@ -31,7 +31,16 @@
         /* MENSAGEM DE CARREGANDO */
         #loader { display: none; margin-top: 15px; padding: 15px; background-color: #1e1e1e; border-radius: 12px; border: 1px solid #333; color: #ee4d2d; font-weight: 600; animation: fadeIn 0.5s ease; }
 
-        .resultado { margin-top: 25px; padding: 20px; background-color: #1e1e1e; border-radius: 16px; border: 1px solid #333; animation: fadeIn 0.5s ease; }
+        /* CAIXA DE RESULTADO COM BORDA VERDE E BRILHO */
+        .resultado { 
+            margin-top: 25px; 
+            padding: 20px; 
+            background-color: #1e1e1e; 
+            border-radius: 16px; 
+            border: 2px solid #30d158; /* Borda verde */
+            box-shadow: 0 0 20px rgba(48, 209, 88, 0.2); /* Brilho verde suave */
+            animation: fadeIn 0.5s ease; 
+        }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .link-text { color: #ee4d2d; font-weight: 800; word-break: break-all; display: block; margin-bottom: 15px; font-size: 15px; }
@@ -80,7 +89,7 @@
 
         {% if link_novo %}
             <div class="resultado" id="resultadoFinal">
-                <span style="color: #888; font-size: 12px; display: block; margin-bottom: 8px; font-weight: 400;">✅ Link com desconto gerado com sucesso:</span>
+                <span style="color: #30d158; font-size: 14px; display: block; margin-bottom: 8px; font-weight: 600;">✅ Link gerado com sucesso!</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
                 
                 <div class="btn-acao">
