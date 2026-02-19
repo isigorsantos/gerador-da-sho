@@ -11,7 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     
     <style>
-        /* APLICANDO A FONTE POPPINS NO SITE TODO */
         body { background-color: #121212; color: white; font-family: 'Poppins', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
         
         .container { text-align: center; width: 90%; max-width: 400px; padding: 20px; }
@@ -19,11 +18,32 @@
         h1 { margin-bottom: 5px; font-weight: 800; font-size: 26px; }
         .subtexto { color: #888; font-size: 14px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; font-weight: 400; }
         
-        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #333; background-color: #1e1e1e; color: white; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s; font-family: 'Poppins', sans-serif; }
-        input:focus { border-color: #ee4d2d; }
+        /* --- DESTAQUE NO CAMPO DE COLAR O LINK --- */
+        input { 
+            width: 100%; 
+            padding: 18px 20px; /* Mais gordinho e confortável */
+            margin-bottom: 20px; 
+            border-radius: 14px; 
+            border: 2px solid rgba(238, 77, 45, 0.4); /* Borda laranja suave permanente */
+            background-color: #1a1a1a; /* Fundo um pouco diferente para destacar */
+            color: white; 
+            box-sizing: border-box; 
+            font-size: 15px; 
+            outline: none; 
+            transition: 0.3s; 
+            font-family: 'Poppins', sans-serif; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4); /* Sombra de profundidade */
+        }
+        input::placeholder { color: #888; font-weight: 400; }
+        input:focus { 
+            border: 2px solid #ee4d2d; /* Laranja forte ao clicar */
+            box-shadow: 0 0 18px rgba(238, 77, 45, 0.3); /* Brilho neon ao clicar */
+            background-color: #1e1e1e;
+        }
+        /* ----------------------------------------- */
         
         /* BOTÃO COM ANIMAÇÃO DE BRILHO (SHIMMER) */
-        .btn-gerar { width: 100%; padding: 15px; border-radius: 12px; border: none; background: #ee4d2d; color: white; font-weight: 800; cursor: pointer; font-size: 16px; transition: 0.3s; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); position: relative; overflow: hidden; font-family: 'Poppins', sans-serif; }
+        .btn-gerar { width: 100%; padding: 16px; border-radius: 12px; border: none; background: #ee4d2d; color: white; font-weight: 800; cursor: pointer; font-size: 16px; transition: 0.3s; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); position: relative; overflow: hidden; font-family: 'Poppins', sans-serif; }
         .btn-gerar:hover { background-color: #d73211; transform: scale(1.02); }
         .btn-gerar::after { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.4), transparent); animation: passar-brilho 1.5s infinite; }
         @keyframes passar-brilho { 100% { left: 100%; } }
@@ -32,15 +52,7 @@
         #loader { display: none; margin-top: 15px; padding: 15px; background-color: #1e1e1e; border-radius: 12px; border: 1px solid #333; color: #ee4d2d; font-weight: 600; animation: fadeIn 0.5s ease; }
 
         /* CAIXA DE RESULTADO COM BORDA VERDE E BRILHO */
-        .resultado { 
-            margin-top: 25px; 
-            padding: 20px; 
-            background-color: #1e1e1e; 
-            border-radius: 16px; 
-            border: 2px solid #30d158; /* Borda verde */
-            box-shadow: 0 0 20px rgba(48, 209, 88, 0.2); /* Brilho verde suave */
-            animation: fadeIn 0.5s ease; 
-        }
+        .resultado { margin-top: 25px; padding: 20px; background-color: #1e1e1e; border-radius: 16px; border: 2px solid #30d158; box-shadow: 0 0 20px rgba(48, 209, 88, 0.2); animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         .link-text { color: #ee4d2d; font-weight: 800; word-break: break-all; display: block; margin-bottom: 15px; font-size: 15px; }
