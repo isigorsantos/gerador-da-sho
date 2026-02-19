@@ -5,110 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerador da Sho</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='logo.png') }}">
     <style>
-        :root {
-            --bg-body: radial-gradient(circle at center, #2a120a 0%, #050505 100%);
-            --texto-principal: #ffffff;
-            --texto-secundario: rgba(255, 255, 255, 0.7);
-            --cor-marca: #ee4d2d;
-            --glass-border: 1px solid rgba(255, 255, 255, 0.2);
-            --bg-glass: rgba(255, 255, 255, 0.08);
-            --cor-sucesso: #30d158;
-        }
-
-        .light-mode {
-            --bg-body: radial-gradient(circle at center, #fff0e6 0%, #eef2f6 100%);
-            --texto-principal: #1c1c1e;
-            --texto-secundario: rgba(0, 0, 0, 0.6);
-            --glass-border: 1px solid rgba(0, 0, 0, 0.1);
-            --bg-glass: rgba(255, 255, 255, 0.7);
-        }
-
-        body { 
-            background: var(--bg-body); color: var(--texto-principal); 
-            font-family: -apple-system, sans-serif; 
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; 
-            min-height: 100vh; margin: 0; padding: 5vh 0; transition: 0.3s;
-            background-attachment: fixed; background-size: cover;
-        }
-
-        .container { text-align: center; width: 90%; max-width: 420px; padding: 30px 25px; border-radius: 45px; background: var(--bg-glass); backdrop-filter: blur(30px); border: var(--glass-border); position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .theme-toggle { position: absolute; top: 25px; right: 25px; cursor: pointer; color: var(--texto-secundario); font-size: 22px; }
-        .stats-bar { display: flex; justify-content: center; margin-bottom: 25px; font-size: 13px; font-weight: 700; color: var(--texto-secundario); background: rgba(255, 255, 255, 0.05); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255, 255, 255, 0.1); width: fit-content; margin: 0 auto 25px auto; }
-        .stats-bar i { color: var(--cor-marca); margin-right: 8px; }
-        .stats-bar strong { color: var(--cor-sucesso); }
+        body { background-color: #121212; color: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .container { text-align: center; width: 90%; max-width: 400px; padding: 20px; }
+        .logo { width: 120px; height: auto; margin-bottom: 10px; border-radius: 20px; filter: drop-shadow(0 0 10px rgba(238, 77, 45, 0.3)); }
+        h1 { margin-bottom: 5px; font-weight: 800; font-size: 26px; }
+        .subtexto { color: #888; font-size: 14px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
         
-        .logo { width: 110px; border-radius: 25%; margin-bottom: 15px; }
-        h1 { margin: 0 0 8px 0; font-weight: 800; font-size: 28px; }
-        .subtexto { color: var(--texto-secundario); font-size: 15px; margin-bottom: 30px; line-height: 1.4; padding: 0 10px; }
+        input { width: 100%; padding: 15px; margin-bottom: 15px; border-radius: 12px; border: 1px solid #333; background-color: #1e1e1e; color: white; box-sizing: border-box; font-size: 16px; outline: none; transition: 0.3s; }
+        input:focus { border-color: #ee4d2d; }
         
-        /* DESTAQUE DO INPUT CORRIGIDO NO MODO CLARO */
-        input { 
-            width: 100%; padding: 18px 25px; margin-bottom: 18px; border-radius: 50px; 
-            background: rgba(255,255,255,0.1); color: #ffffff; font-weight: 800; font-size: 16px;
-            border: 2px solid rgba(238, 77, 45, 0.5); outline: none; box-sizing: border-box; transition: 0.3s;
-        }
-        .light-mode input { 
-            background: #ffffff; 
-            border: 2px solid #ee4d2d; 
-            color: #000000; 
-            box-shadow: 0 5px 15px rgba(238, 77, 45, 0.2); /* Destaque aqui */
-        }
-        .light-mode input::placeholder { color: rgba(0, 0, 0, 0.4); }
-        input:focus { border: 2px solid #ee4d2d; box-shadow: 0 0 15px rgba(238, 77, 45, 0.4); }
-
-        .btn-gerar { width: 100%; padding: 18px; margin-bottom: 20px; border-radius: 50px; border: none; background: linear-gradient(170deg, #ff7a59, #ee4d2d 60%, #c43317); color: white; font-weight: 800; cursor: pointer; font-size: 17px; position: relative; overflow: hidden; }
-        .btn-gerar::after { content: ''; position: absolute; top: -50%; left: -60%; width: 20%; height: 200%; background: rgba(255, 255, 255, 0.4); transform: rotate(30deg); animation: brilho-passando 3s infinite; }
-        @keyframes brilho-passando { 0% { left: -60%; } 100% { left: 120%; } }
-
-        #loader { display: none; margin-top: 15px; padding: 15px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: var(--glass-border); backdrop-filter: blur(10px); color: var(--texto-principal); }
-        .resultado { margin-top: 25px; padding: 25px; border-radius: 35px; background: rgba(255,255,255,0.05); border: 3px solid var(--cor-sucesso); animation: fadeIn 0.5s; }
-        .sucesso-titulo { color: var(--cor-sucesso) !important; font-weight: 800; display: block; margin-bottom: 10px; animation: vai-e-vem 1.5s infinite; }
-        .link-text { color: var(--cor-marca); font-weight: 700; word-break: break-all; display: block; margin-bottom: 20px; }
-        .btn-acao { display: flex; gap: 10px; }
-        .btn-acao * { flex: 1; padding: 12px; border-radius: 50px; border: none; font-weight: 700; color: white; text-decoration: none; cursor: pointer; background: #333; font-size: 13px; display: flex; align-items: center; justify-content: center; }
-        .btn-abrir { background: #ee4d2d !important; }
-        .canais-section { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--texto-secundario); }
-        .btn-social { width: 100%; padding: 12px; border-radius: 50px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; color: white !important; text-decoration: none; margin-bottom: 10px; }
-        .btn-tg { background: #0088cc; }
-        .btn-wa { background: #25d366; }
-        @keyframes vai-e-vem { 0%, 100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
+        .btn-gerar { width: 100%; padding: 15px; border-radius: 12px; border: none; background: #ee4d2d; color: white; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; box-shadow: 0 4px 15px rgba(238, 77, 45, 0.3); }
+        .btn-gerar:hover { background-color: #d73211; transform: scale(1.02); }
+        
+        .resultado { margin-top: 25px; padding: 20px; background-color: #1e1e1e; border-radius: 16px; border: 1px solid #333; animation: fadeIn 0.5s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .link-text { color: #ee4d2d; font-weight: bold; word-break: break-all; display: block; margin-bottom: 15px; font-size: 15px; }
+        
+        .btn-acao { display: flex; gap: 10px; }
+        .btn-acao a, .btn-acao button { flex: 1; padding: 12px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; font-size: 14px; text-decoration: none; transition: 0.2s; display: flex; align-items: center; justify-content: center; text-align: center; }
+        
+        .btn-abrir { background-color: #ee4d2d; color: white; box-shadow: 0 4px 10px rgba(238, 77, 45, 0.3); }
+        .btn-abrir:hover { background-color: #d73211; transform: scale(1.02); }
+        
+        .btn-copiar { background-color: #2a2a2a; color: #ccc; border: 1px solid #333; }
+        .btn-copiar:hover { background-color: #333; color: white; }
+
+        /* SEÇÃO DE CANAIS ATUALIZADA */
+        .canais-section { margin-top: 40px; border-top: 1px solid #333; padding-top: 25px; padding-bottom: 20px; width: 100%; }
+        .canais-titulo { color: #888; font-size: 13px; margin-bottom: 15px; display: block; }
+        
+        .canais-botoes { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        
+        .btn-social { 
+            width: 100%;
+            max-width: 280px;
+            color: white !important; 
+            text-decoration: none; 
+            padding: 12px 20px; 
+            border-radius: 50px; 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center;
+            gap: 12px; 
+            font-weight: bold; 
+            font-size: 14px; 
+            transition: 0.3s;
+        }
+        
+        .btn-tg { background-color: #0088cc; box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2); }
+        .btn-wa { background-color: #25d366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); }
+        .btn-social:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* AVISO DE COPIADO */
+        #avisoCopiado { visibility: hidden; min-width: 200px; background-color: #28a745; color: #fff; text-align: center; border-radius: 50px; padding: 12px; position: fixed; z-index: 1; bottom: 30px; font-weight: bold; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        #avisoCopiado.show { visibility: visible; animation: fadeinout 2s; }
+        @keyframes fadeinout { 0%, 100% { opacity: 0; bottom: 0; } 20%, 80% { opacity: 1; bottom: 30px; } }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="theme-toggle" onclick="toggleTheme()"><i id="theme-icon" class="fas fa-sun"></i></div>
-        <div class="stats-bar"><span><i class="fas fa-bolt"></i> Ofertas Geradas: <strong>{{ links_contagem }}</strong></span></div>
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo">
         <h1>Gerador da Sho</h1>
         <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
-        <form method="POST" onsubmit="mostrarLoading()">
-            <input type="text" name="link_usuario" placeholder="Cole seu link aqui..." required autocomplete="off">
-            <button type="submit" class="btn-gerar">{% if link_novo %} GERAR NOVO LINK ⚡ {% else %} GERAR LINK COM DESCONTO ⚡ {% endif %}</button>
+
+        <form method="POST">
+            <input type="text" name="link_usuario" placeholder="Cole o link do seu produto da Shopee aqui..." required autocomplete="off">
+            <button type="submit" class="btn-gerar">GERAR LINK COM DESCONTO ⚡</button>
         </form>
-        <div id="loader"><span style="font-weight: 700;">✨ Gerando seu link com desconto...</span></div>
+
         {% if link_novo %}
             <div class="resultado">
-                <span class="sucesso-titulo">✅ Link gerado com sucesso!</span>
+                <span style="color: #888; font-size: 12px; display: block; margin-bottom: 8px;">✅ Link com desconto gerado com sucesso:</span>
                 <span class="link-text" id="meuLink">{{ link_novo }}</span>
-                <div class="btn-acao"><a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE</a><button onclick="copiarLink()">COPIAR LINK</button></div>
+                
+                <div class="btn-acao">
+                    <a href="{{ link_novo }}" target="_blank" class="btn-abrir">ABRIR NA SHOPEE 🛍️</a>
+                    <button onclick="copiarLink()" class="btn-copiar">COPIAR LINK</button>
+                </div>
             </div>
         {% endif %}
-        {% if erro %}<p style="color: #ff4c4c; margin-top: 20px; font-size: 14px;">{{ erro }}</p>{% endif %}
+
         <div class="canais-section">
-            <span style="color: var(--texto-secundario); font-size: 13px; margin-bottom: 15px; display: block;">Nossos grupos de cupons grátis:</span>
-            <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">Telegram</a>
-            <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">WhatsApp</a>
+            <span class="canais-titulo">Entre em nossos grupos de cupons grátis:</span>
+            <div class="canais-botoes">
+                <a href="https://t.me/cuponsdasho" target="_blank" class="btn-social btn-tg">
+                    <i class="fab fa-telegram-plane" style="font-size: 22px;"></i>
+                    Grupo no Telegram
+                </a>
+                
+                <a href="https://whatsapp.com/channel/0029VaGaBZj5vKACU9lGcr1A" target="_blank" class="btn-social btn-wa">
+                    <i class="fab fa-whatsapp" style="font-size: 22px;"></i>
+                    Grupo no WhatsApp
+                </a>
+            </div>
         </div>
+
+        {% if erro %}
+            <p style="color: #ff4c4c; margin-top: 20px; font-size: 14px;">{{ erro }}</p>
+        {% endif %}
     </div>
+
+    <div id="avisoCopiado">Link copiado com sucesso! ✔️</div>
+
     <script>
-        const html = document.documentElement; const icon = document.getElementById('theme-icon');
-        if (localStorage.getItem('theme') === 'light') { html.classList.add('light-mode'); icon.classList.replace('fa-sun', 'fa-moon'); }
-        function toggleTheme() { html.classList.toggle('light-mode'); const isLight = html.classList.contains('light-mode'); icon.classList.replace(isLight ? 'fa-sun' : 'fa-moon', isLight ? 'fa-moon' : 'fa-sun'); localStorage.setItem('theme', isLight ? 'light' : 'dark'); }
-        function mostrarLoading() { const res = document.querySelector('.resultado'); if (res) res.style.display = 'none'; document.getElementById('loader').style.display = 'block'; }
-        function copiarLink() { const texto = document.getElementById('meuLink').innerText; const input = document.createElement("textarea"); input.value = texto; document.body.appendChild(input); input.select(); document.execCommand("copy"); document.body.removeChild(input); alert("Copiado!"); }
+        function copiarLink() {
+            const texto = document.getElementById('meuLink').innerText;
+            const inputTemporario = document.createElement("textarea");
+            inputTemporario.value = texto;
+            document.body.appendChild(inputTemporario);
+            inputTemporario.select();
+            inputTemporario.setSelectionRange(0, 99999);
+            try {
+                document.execCommand("copy");
+                mostrarAviso();
+            } catch (err) { console.error('Erro ao copiar', err); }
+            document.body.removeChild(inputTemporario);
+        }
+
+        function mostrarAviso() {
+            const x = document.getElementById("avisoCopiado");
+            x.className = "show";
+            setTimeout(function(){ x.className = x.className.replace("show", ""); }, 2000);
+        }
     </script>
 </body>
 </html>
