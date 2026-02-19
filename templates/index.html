@@ -15,18 +15,13 @@
         
         .container { text-align: center; width: 90%; max-width: 400px; padding: 20px; position: relative; }
         
-        /* EFEITO FLUTUAR NA LOGO (SUGESTÃO 4) */
-        .logo { width: 120px; height: auto; margin-bottom: 10px; border-radius: 20px; filter: drop-shadow(0 0 10px rgba(238, 77, 45, 0.3)); animation: flutuar 4s ease-in-out infinite; }
+        /* LOGO CENTRALIZADA COM EFEITO FLUTUAR */
+        .logo { width: 120px; height: auto; margin-bottom: 10px; border-radius: 20px; filter: drop-shadow(0 0 10px rgba(238, 77, 45, 0.3)); animation: flutuar 4s ease-in-out infinite; display: block; margin-left: auto; margin-right: auto; }
         @keyframes flutuar { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
         
         h1 { margin-bottom: 5px; font-weight: 800; font-size: 26px; }
         .subtexto { color: #888; font-size: 14px; margin-bottom: 25px; line-height: 1.4; padding: 0 10px; font-weight: 400; }
         
-        /* A VOLTA DA BARRA DE ESTATÍSTICAS (SUGESTÃO 2) */
-        .stats-bar { display: inline-flex; align-items: center; justify-content: center; margin-bottom: 25px; font-size: 12px; font-weight: 600; color: #aaa; background: rgba(255, 255, 255, 0.05); padding: 8px 18px; border-radius: 50px; border: 1px solid #333; }
-        .stats-bar i { color: #ee4d2d; margin-right: 6px; font-size: 14px; }
-        .stats-bar strong { color: #30d158; margin-left: 5px; font-weight: 800; font-size: 14px; }
-
         /* DESTAQUE NO CAMPO DE COLAR O LINK */
         input { width: 100%; padding: 18px 20px; margin-bottom: 20px; border-radius: 14px; border: 2px solid rgba(238, 77, 45, 0.4); background-color: #1a1a1a; color: white; box-sizing: border-box; font-size: 15px; outline: none; transition: 0.3s; font-family: 'Poppins', sans-serif; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
         input::placeholder { color: #888; font-weight: 400; }
@@ -59,7 +54,7 @@
         
         .canais-botoes { display: flex; flex-direction: column; gap: 12px; align-items: center; }
         
-        /* BOTÕES SOCIAIS COM SELOS (SUGESTÃO 3) */
+        /* BOTÕES SOCIAIS COM SELOS */
         .btn-social { width: 100%; max-width: 290px; color: white !important; text-decoration: none; padding: 14px 20px; border-radius: 50px; display: flex; align-items: center; justify-content: space-between; font-weight: 600; font-size: 14px; transition: 0.3s; box-sizing: border-box; }
         .btn-tg { background-color: #0088cc; box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2); }
         .btn-wa { background-color: #25d366; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.2); color: #000 !important; }
@@ -72,7 +67,7 @@
         @keyframes pulse-vip { 0% { transform: scale(1); } 50% { transform: scale(1.08); } 100% { transform: scale(1); } }
         @keyframes piscar-verde { from { opacity: 0.7; } to { opacity: 1; box-shadow: 0 0 15px rgba(255, 255, 255, 1); } }
 
-        /* RODAPÉ DE CONFIANÇA (SUGESTÃO 1) */
+        /* RODAPÉ DE CREDIBILIDADE */
         .footer { margin-top: 20px; font-size: 11px; color: #555; font-weight: 400; display: flex; align-items: center; justify-content: center; gap: 6px; }
         .footer i { color: #30d158; font-size: 10px; }
 
@@ -86,11 +81,8 @@
 <body>
     <div class="container">
         
-        <div class="stats-bar">
-            <i class="fas fa-bolt"></i> Ofertas Geradas: <strong>{{ links_contagem }}</strong>
-        </div>
-
         <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo Cupons da Sho" class="logo">
+        
         <h1>Gerador da Sho</h1>
         <p class="subtexto">Transforme qualquer produto da Shopee em uma oferta exclusiva Cupons da Sho 🧡</p>
 
