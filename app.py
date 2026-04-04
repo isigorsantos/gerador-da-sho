@@ -4,6 +4,7 @@ import hashlib
 import requests
 import json
 from urllib.parse import urlparse
+import re
 
 app = Flask(__name__)
 
@@ -15,17 +16,34 @@ PARTNER_KEY = "UIODYHCTHG2UZJLKOEP5ZINNEFRB3KHP"
 stats = {'links': 4}
 
 def expandir_e_limpar(url_usuario):
-    """ Descobre o link real e remove rastreadores pesados """
+    """ Descobre o link real e remove rastreadores pesados, com proteção anti-bloqueio """
     try:
-        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
-        response = requests.get(url_usuario, allow_redirects=True, timeout=10, headers=headers)
+        # 1. Cabeçalhos completos para simular um navegador real e enganar o bloqueio da Shopee
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
+        }
+        
+        response = requests.get(url_usuario, allow_redirects=True, timeout=15, headers=headers)
         url_final = response.url
+        
+        # 2. Resgate anti-bloqueio: se a Shopee usar scripts no s.shopee em vez de redirecionar normal
+        if "s.shopee" in url_final or "shope.ee" in url_final:
+            # Vasculha o código fonte da página atrás do link longo escondido
+            match = re.search(r'(https://shopee\.com\.br/[^\s"\'<>]+)', response.text)
+            if match:
+                url_final = match.group(1)
+
+        # 3. Limpeza final do link
         if "shopee.com.br" in url_final:
             parsed = urlparse(url_final)
             url_limpa = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
             return url_limpa
+            
         return url_final
-    except Exception:
+    except Exception as e:
+        print(f"Erro ao expandir: {e}")
         return url_usuario
 
 def converter_shopee(url_original):
