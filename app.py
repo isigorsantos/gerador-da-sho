@@ -3,7 +3,7 @@ import time
 import hashlib
 import requests
 import json
-from urllib.parse import urlparse
+from urllib.parse import urlparse, unquote
 import re
 
 app = Flask(__name__)
@@ -12,30 +12,38 @@ app = Flask(__name__)
 PARTNER_ID = 18322310004
 PARTNER_KEY = "UIODYHCTHG2UZJLKOEP5ZINNEFRB3KHP"
 
-# Contador de ofertas (Inicia em 0 ou no número que você quiser)
+# Contador de ofertas
 stats = {'links': 4}
 
 def expandir_e_limpar(url_usuario):
-    """ Descobre o link real e remove rastreadores pesados, com proteção anti-bloqueio """
+    """ Descobre o link real e remove rastreadores pesados, com proteção anti-bloqueio atualizada """
     try:
-        # 1. Cabeçalhos completos para simular um navegador real e enganar o bloqueio da Shopee
         headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
             'Accept-Language': 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
         }
         
-        response = requests.get(url_usuario, allow_redirects=True, timeout=15, headers=headers)
+        session = requests.Session()
+        response = session.get(url_usuario, allow_redirects=True, timeout=15, headers=headers)
         url_final = response.url
         
-        # 2. Resgate anti-bloqueio: se a Shopee usar scripts no s.shopee em vez de redirecionar normal
-        if "s.shopee" in url_final or "shope.ee" in url_final:
-            # Vasculha o código fonte da página atrás do link longo escondido
+        # Lista atualizada de domínios curtos da Shopee (incluindo o novo shp.ee)
+        dominios_curtos = ["s.shopee", "shope.ee", "shp.ee"]
+        
+        if any(dominio in url_final for dominio in dominios_curtos):
+            # 1ª Tentativa: Procura a URL longa normal escondida no HTML
             match = re.search(r'(https://shopee\.com\.br/[^\s"\'<>]+)', response.text)
             if match:
                 url_final = match.group(1)
+            else:
+                # 2ª Tentativa: Busca URLs que possam estar codificadas pela nova segurança da Shopee
+                match_encoded = re.search(r'(https%3A%2F%2Fshopee\.com\.br[^\s"\'<>]+)', response.text)
+                if match_encoded:
+                    # Descodifica a URL (ex: transforma %2F em /)
+                    url_final = unquote(match_encoded.group(1))
 
-        # 3. Limpeza final do link
+        # Limpeza final para remover excessos que a API rejeita
         if "shopee.com.br" in url_final:
             parsed = urlparse(url_final)
             url_limpa = f"{parsed.scheme}://{parsed.netloc}{parsed.path}"
